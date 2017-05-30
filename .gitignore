@@ -8,6 +8,14 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+dist
+.idea
+.DS_Store
+tmp
+perf-logs
+v8.log
+*.js
+*.js.map
 
 # Runtime data
 pids
