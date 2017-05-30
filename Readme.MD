@@ -3,6 +3,9 @@
 
 This is a simple REST API developed using node and express with typescript
 
+![alt text](https://image.ibb.co/nAd9OF/logos.png "Node Typescript")
+
+
 ## Setup
 
 clone the repo then goto that directory and run following commands
