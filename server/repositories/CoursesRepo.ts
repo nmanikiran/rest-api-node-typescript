@@ -21,7 +21,6 @@ class CourseRepo {
             ]
         });
     }
-
 }
 
 export default new CourseRepo();
