@@ -1,7 +1,6 @@
 
 import * as nconf from "nconf";
 
-
 export function AppConfig(): void {
 
     nconf.argv({
