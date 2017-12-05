@@ -10,8 +10,14 @@ This is a simple REST API developed using node and express with typescript
 [Node.js](https://nodejs.org/en/),  [postgresql](https://www.postgresql.org/download/)
 
 ## Setup DB
-you can find the DB and other details under `server/db`
-create database and then run the `.sql` files
+1) you need to install PostgreSQL  and then set the  following environment variable 
+      `C:\Program Files\PostgreSQL\10\bin`,
+      `C:\Program Files\PostgreSQL\10\lib`
+2) in the db.ts file the DB connection string need to be updated accoring to `credentials`.
+      ex : `postgres://<YourUserName>:<YourPassword>@localhost:5432/<YourDatabase>`
+
+3) you can find the DB and other details under `server/db`
+create database with the name `complete-typescript-course` and then run/ import the `.sql` files
 
 ## Setup
 
@@ -29,8 +35,7 @@ To start the Application
 
 this will run on port 3000 you can change on config or
 
-`node bin/www.js -p <PORT>`
-
+`node server.js -p <PORT>`
 
 
 
