@@ -1,12 +1,9 @@
-
-import { Lesson } from "./../models/Lesson";
-import { Course } from "./../models/Course";
+import { Course } from '../models/Course';
+import { Lesson } from '../models/Lesson';
 
 class CourseRepo {
 
-    constructor() {
-        console.log("Courses Repo...");
-    }
+    constructor() {    }
 
     getAllCourses(options) {
         return Course.findAll(options);
