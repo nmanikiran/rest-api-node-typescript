@@ -4,33 +4,44 @@
   "description": "This is a simple REST API developed using node and express with typescript",
   "scripts": {
     "start": "nodemon server.js",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "keywords": [
     "Node",
     "Typescript",
     "postgresql"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nmanikiran/rest-api-node-typescript.git"
+  },
+  "homepage": "https://github.com/nmanikiran/rest-api-node-typescript#readme",
+  "bugs": {
+    "url": "https://github.com/nmanikiran/rest-api-node-typescript/issues"
+  },
   "author": "Mani Kiran N",
   "license": "MIT",
   "devDependencies": {
-    "@types/body-parser": "^1.16.8",
-    "@types/express": "^4.11.1",
-    "@types/joi": "^13.0.5",
+    "@types/body-parser": "^1.17.0",
+    "@types/dotenv": "^4.0.3",
+    "@types/express": "^4.16.0",
+    "@types/joi": "^13.0.8",
     "@types/nconf": "0.0.34",
-    "@types/node": "^7.0.55",
-    "@types/sequelize": "^4.27.8",
-    "@types/winston": "^2.3.8",
-    "typescript": "^2.6.1"
+    "@types/node": "^7.0.65",
+    "@types/sequelize": "^4.27.20",
+    "@types/winston": "^2.3.9",
+    "typescript": "^2.9.1"
   },
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "joi": "^13.1.2",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "joi": "^13.4.0",
     "morgan": "^1.9.0",
     "nconf": "^0.8.5",
     "pg": "^6.4.2",
-    "sequelize": "^3.32.1",
-    "winston": "^2.4.0"
+    "sequelize": "^3.33.0",
+    "winston": "^2.4.3"
   }
 }

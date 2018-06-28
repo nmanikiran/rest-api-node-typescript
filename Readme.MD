@@ -13,10 +13,10 @@ This is a simple REST API developed using node and express with typescript
 1) you need to install PostgreSQL  and then set the  following environment variable 
       `C:\Program Files\PostgreSQL\10\bin`,
       `C:\Program Files\PostgreSQL\10\lib`
-2) in the db.ts file the DB connection string need to be updated accoring to `credentials`.
+2) rename `.env-sample` to `.env` in the file the DB connection string need to be updated accoring to your `credentials`.
       ex : `postgres://<YourUserName>:<YourPassword>@localhost:5432/<YourDatabase>`
 
-3) you can find the DB and other details under `server/db`
+3) you can find the DB and other details under `src/db`
 create database with the name `complete-typescript-course` and then run/ import the `.sql` files
 
 ## Setup
