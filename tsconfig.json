@@ -1,19 +1,19 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": false,
-        "sourceMap": true
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": false,
+    "sourceMap": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/*.js": {
+      "when": "$(basename).ts"
     },
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/.DS_Store": true,
-        "**/node_modules": true,
-        "**/*.js": {
-            "when": "$(basename).ts"
-        },
-        "**/*.js.map": true
-    }
+    "**/*.js.map": true
+  }
 }

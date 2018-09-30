@@ -15,9 +15,15 @@ export default class CoursesRoutes {
 
   getCourseDetails(req: Request, res: Response, next: NextFunction) {
     CourseRepo.getById(req.params.id)
-      .then(result => res.json(result))
+      .then(result => {
+        if (result) {
+          return res.json(result);
+        } else {
+          res.status(404).send(`Lesson ${req.params.id} not found.`);
+        }
+      })
       .catch(err => {
-        apiErrorHandler(err, req, res, `Course ${req.params.id} not found.`);
+        apiErrorHandler(err, req, res, `Course ${req.params.id} is failed.`);
       });
   }
 }

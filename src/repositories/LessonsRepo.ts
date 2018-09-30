@@ -1,33 +1,31 @@
-import { Course } from '../models/Course';
 import { Lesson } from '../models/Lesson';
 
 class LessonRepo {
+  constructor() {}
 
-    constructor() {    }
+  getAllLessons(options) {
+    return Lesson.findAll(options);
+  }
 
-    getAllLessons(options) {
-        return Lesson.findAll(options);
-    }
+  getLessonById(id) {
+    return Lesson.findById(id);
+  }
 
-    getLessonById(id) {
-        return Lesson.findById(id);
-    }
+  getLessonByCourse(id) {
+    return Lesson.findAll({ where: { courseId: id } });
+  }
 
-    getLessonByCourse(id) {
-        return Lesson.findAll({ where: { 'courseId': id } });
-    }
+  createLesson(props: any) {
+    return Lesson.create(props);
+  }
 
-    createLesson(props: any) {
-        return Lesson.create(props);
-    }
+  updateLesson(id: Number, props: any) {
+    return Lesson.update(props, { where: { id } });
+  }
 
-    updateLesson(id: Number, props: any) {
-        return Lesson.update(props, { where: { id } });
-    }
-
-    deleteLesson(id: Number) {
-        return Lesson.destroy({ where: { id } });
-    }
+  deleteLesson(id: Number) {
+    return Lesson.destroy({ where: { id } });
+  }
 }
 
 export default new LessonRepo();

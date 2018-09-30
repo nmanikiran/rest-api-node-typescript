@@ -1,6 +1,5 @@
 import * as Joi from 'joi';
-import { JoiObject } from 'joi';
-import { Router, Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 export class LessonValidator {
   constructor() {}

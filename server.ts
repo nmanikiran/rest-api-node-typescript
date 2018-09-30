@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import * as express from 'express';
 import { Application } from 'express';
-import { sequelize } from './src/db/db';
 import * as nconf from 'nconf';
 
 import Server from './src/index';

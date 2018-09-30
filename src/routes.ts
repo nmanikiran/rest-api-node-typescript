@@ -1,4 +1,4 @@
-import { Application, Request, Response, NextFunction, Router } from 'express';
+import { Application } from 'express';
 import CoursesCtrl from './controllers/CoursesCtrl';
 import LessonsCtrl from './controllers/LessonsCtrl';
 import { LessonValidator, lessonSchema } from './validators/lessonValidator';
