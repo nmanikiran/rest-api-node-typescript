@@ -8,7 +8,7 @@ class LessonRepo {
   }
 
   getLessonById(id) {
-    return Lesson.findById(id);
+    return Lesson.findByPk(id);
   }
 
   getLessonByCourse(id) {
@@ -20,11 +20,11 @@ class LessonRepo {
   }
 
   updateLesson(id: Number, props: any) {
-    return Lesson.update(props, { where: { id } });
+    return Lesson.update(props, { where: { id: id.toString() } });
   }
 
   deleteLesson(id: Number) {
-    return Lesson.destroy({ where: { id } });
+    return Lesson.destroy({ where: { id: id.toString() } });
   }
 }
 

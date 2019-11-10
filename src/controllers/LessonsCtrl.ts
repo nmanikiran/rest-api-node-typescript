@@ -21,7 +21,7 @@ export default class LessonRoutes {
           err,
           req,
           res,
-          `Lessons in course ${req.params.id} failed.`
+          `Lessons in course ${req.params.id} failed.`,
         );
       });
   }
@@ -49,27 +49,29 @@ export default class LessonRoutes {
   }
 
   updateLesson(req: Request, res: Response, next: NextFunction) {
-    LessonRepo.updateLesson(req.params.id, req['value']['body'])
+    const id = parseInt(req.params.id);
+    LessonRepo.updateLesson(id, req['value']['body'])
       .then(result => res.json(result))
       .catch(err => {
         apiErrorHandler(
           err,
           req,
           res,
-          `updation of Lesson ${req.params.id} is failed.`
+          `updation of Lesson ${req.params.id} is failed.`,
         );
       });
   }
 
   deleteLesson(req: Request, res: Response, next: NextFunction) {
-    LessonRepo.deleteLesson(req.params.id)
+    const id = parseInt(req.params.id);
+    LessonRepo.deleteLesson(id)
       .then(result => res.json(result))
       .catch(err => {
         apiErrorHandler(
           err,
           req,
           res,
-          `deletion of Lesson ${req.params.id}  is failed.`
+          `deletion of Lesson ${req.params.id}  is failed.`,
         );
       });
   }

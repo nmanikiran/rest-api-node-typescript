@@ -1,13 +1,32 @@
 import { sequelize } from './../db/db';
-import * as ORM from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 
-export const Lesson = sequelize.define('Lesson', {
-  url: ORM.STRING,
-  description: ORM.STRING,
-  duration: ORM.STRING,
-  seqNo: ORM.INTEGER,
-  courseId: ORM.INTEGER,
-  pro: ORM.BOOLEAN,
-  tags: ORM.STRING,
-  gitHubUrl: ORM.STRING
-});
+export class Lesson extends Model {
+  public id!: number;
+  public url: string;
+  public description: string;
+  public duration: string;
+  public seqNo: number;
+  public courseId: number;
+  public pro: boolean;
+  public tags: string;
+  public gitHubUrl: string;
+}
+
+Lesson.init(
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true },
+    url: DataTypes.STRING,
+    description: DataTypes.STRING,
+    duration: DataTypes.STRING,
+    seqNo: DataTypes.INTEGER,
+    courseId: DataTypes.INTEGER,
+    pro: DataTypes.BOOLEAN,
+    tags: DataTypes.STRING,
+    gitHubUrl: DataTypes.STRING,
+  },
+  {
+    sequelize,
+    tableName: 'Lessons',
+  },
+);

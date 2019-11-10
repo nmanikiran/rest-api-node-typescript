@@ -9,12 +9,12 @@ class CourseRepo {
   }
 
   getById(courseId) {
-    return Course.findById(courseId, {
+    return Course.findByPk(courseId, {
       include: [
         {
-          model: Lesson
-        }
-      ]
+          model: Lesson,
+        },
+      ],
     });
   }
 }

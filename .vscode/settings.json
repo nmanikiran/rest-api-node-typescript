@@ -4,5 +4,13 @@
   "prettier.singleQuote": true,
   "prettier.trailingComma": "all",
   "prettier.tslintIntegration": true,
-  "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace"
+  "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
+  "files.exclude": {
+    "**/*.js": {
+      "when": "$(basename).ts"
+    },
+    "**/*.js.map": {
+      "when": "$(basename)"
+    }
+  }
 }
