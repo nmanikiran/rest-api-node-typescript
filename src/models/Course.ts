@@ -8,25 +8,25 @@ export class Course extends Model {
   public url: string;
   public longDescription: string;
   public iconUrl: string;
-  public courseListIcon: string;
+  public tags: string;
+  public channelTitle: string;
+  public channelUrl: string;
+  public channelId: string;
   public seqNo: number;
-  public comingSoon: boolean;
-  public isNew: boolean;
-  public isOngoing: boolean;
 }
 
 Course.init(
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     description: { type: DataTypes.STRING },
-    url: DataTypes.STRING,
-    longDescription: DataTypes.TEXT,
-    iconUrl: DataTypes.STRING,
-    courseListIcon: DataTypes.STRING,
-    seqNo: DataTypes.INTEGER,
-    comingSoon: DataTypes.BOOLEAN,
-    isNew: DataTypes.BOOLEAN,
-    isOngoing: DataTypes.BOOLEAN,
+    url: { type: DataTypes.STRING },
+    longDescription: { type: DataTypes.TEXT },
+    iconUrl: { type: DataTypes.STRING },
+    tags: { type: DataTypes.STRING },
+    channelTitle: { type: DataTypes.STRING },
+    channelUrl: { type: DataTypes.STRING },
+    channelId: { type: DataTypes.STRING },
+    seqNo: { type: DataTypes.INTEGER },
   },
   {
     sequelize,
@@ -34,5 +34,5 @@ Course.init(
   },
 );
 
-Course.hasMany(Lesson, { foreignKey: 'courseId' });
-Lesson.belongsTo(Course, { foreignKey: 'courseId' });
+Course.hasMany(Lesson, { foreignKey: 'courseId', as: 'lessons' });
+Lesson.belongsTo(Course, { foreignKey: 'courseId', as: 'course' });

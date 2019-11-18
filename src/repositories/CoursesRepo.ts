@@ -2,7 +2,7 @@ import { Course } from '../models/Course';
 import { Lesson } from '../models/Lesson';
 
 class CourseRepo {
-  constructor() {}
+  constructor() { }
 
   getAllCourses(options) {
     return Course.findAll(options);
@@ -13,6 +13,7 @@ class CourseRepo {
       include: [
         {
           model: Lesson,
+          as: 'lessons'
         },
       ],
     });

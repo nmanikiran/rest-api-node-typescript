@@ -4,7 +4,6 @@ import * as morgan from 'morgan';
 import * as fs from 'fs';
 import { WriteStream } from 'fs';
 import * as path from 'path';
-import { AppConfig } from './config/config';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 import * as winston from 'winston';
@@ -27,7 +26,6 @@ export default class Server {
   }
 
   public config(app: Application): void {
-    AppConfig();
     const accessLogStream: WriteStream = fs.createWriteStream(
       path.join(__dirname, './logs/access.log'),
       { flags: 'a' },

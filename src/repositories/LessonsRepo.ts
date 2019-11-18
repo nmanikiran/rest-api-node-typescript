@@ -1,7 +1,7 @@
 import { Lesson } from '../models/Lesson';
 
 class LessonRepo {
-  constructor() {}
+  constructor() { }
 
   getAllLessons(options) {
     return Lesson.findAll(options);

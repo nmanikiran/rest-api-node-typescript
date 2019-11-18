@@ -22,18 +22,17 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 
 3. you can find the DB and other details under `src/db`
    create database with the name `complete-typescript-course` and then run/ import the `.sql` files
+   Or you can run `npm run seed`.
 
 ## Run the app locally
 
 - git clone https://github.com/nmanikiran/rest-api-node-typescript.git
 
 - `npm install`
-- `npm run watch` - To transpile .ts files to .js
-- `nodemon or npm start` - This start the Application and run on port 3000
+- `npm start` - This will start the Application and run on port 3000
+- `npm run dev` - This will start the Application in development mode
 
-you can change on config or
-
-`node server.js -p <PORT>`
+you can change port in `.env` file check `.env-sample`
 
 ## Contributing
 
@@ -68,4 +67,7 @@ Feel free to reach out to me through @nmanikiran if you have any questions or fe
 
 ## Credits to
 
-Angular University [complete-typescript-course](https://github.com/angular-university/complete-typescript-course)
+- Envato Tuts+ [30 Days to Learn HTML & CSS (Full Course)](https://www.youtube.com/playlist?list=PLgGbWId6zgaWZkPFI4Sc9QXDmmOWa1v5F)
+- Wes Bos [JavaScript30](https://www.youtube.com/playlist?list=PLu8EoSxDXHP6CGK4YVJhL_VWetA865GOH)
+- CodeWorkr [REST API with Node (Express & MongoDB)](https://www.youtube.com/playlist?list=PLSpJkDDmpFZ5rZ5-Aur9WRNsBDSUS-0B9)
+- Tyler McGinnis [Advanced JavaScript](https://www.youtube.com/playlist?list=PLqrUy7kON1meuCvGp2D6yTglZhPTT_s_f)

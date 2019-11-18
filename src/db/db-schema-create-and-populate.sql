@@ -1,234 +1,1140 @@
+-- DROP DATABASE "node-typescript-rest-api";
 
--- Database: "complete-typescript-course"
+-- CREATE DATABASE "node-typescript-rest-api" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_IN' LC_CTYPE = 'en_IN';
 
+-- \connect "node-typescript-rest-api"
 
--- DROP TABLE "Courses";
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
 
-CREATE TABLE "Courses"
-(
-  id serial NOT NULL,
-  url character varying(255),
-  description character varying(255) NOT NULL,
-  "longDescription" text NOT NULL,
-  "seqNo" integer NOT NULL,
-  "iconUrl" character varying(255) NOT NULL,
-  "comingSoon" boolean NOT NULL DEFAULT false,
-  "isNew" boolean NOT NULL DEFAULT false,
-  "isOngoing" boolean NOT NULL DEFAULT false,
-  "visibleFrom" timestamp with time zone NOT NULL DEFAULT '1970-02-01 00:00:00+01'::timestamp with time zone,
-  "createdAt" timestamp with time zone NOT NULL,
-  "updatedAt" timestamp with time zone NOT NULL,
-  "courseListIcon" character varying(255),
-  CONSTRAINT "Courses_pkey" PRIMARY KEY (id)
+SET default_tablespace = '';
+
+--
+-- TOC entry 197 (class 1259 OID 17419)
+
+--
+
+CREATE TABLE public."Courses" (
+    id integer NOT NULL,
+    description character varying(255),
+    url character varying(255),
+    "longDescription" text,
+    "iconUrl" character varying(255),
+    tags character varying(255),
+    "channelTitle" character varying(255),
+    "channelUrl" character varying(255),
+    "channelId" character varying(255),
+    "seqNo" integer,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
 );
 
 
--- Table: "Lessons"
 
-CREATE TABLE "Lessons"
-(
-  id serial NOT NULL,
-  url character varying(255),
-  description character varying(255) NOT NULL,
-  duration character varying(255) NOT NULL,
-  "seqNo" integer NOT NULL,
-  "courseId" integer,
-  pro boolean DEFAULT false,
-  "gitHubUrl" character varying(255) NOT NULL,
-  tags character varying(255) DEFAULT ''::character varying,
-  "createdAt" timestamp with time zone NOT NULL,
-  "updatedAt" timestamp with time zone NOT NULL,
-  CONSTRAINT "Lessons_pkey" PRIMARY KEY (id),
-  CONSTRAINT "Lessons_courseId_fkey" FOREIGN KEY ("courseId")
-      REFERENCES "Courses" (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
+
+--
+-- TOC entry 196 (class 1259 OID 17417)
+
+--
+
+CREATE SEQUENCE public."Courses_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+
+
+--
+-- TOC entry 2930 (class 0 OID 0)
+-- Dependencies: 196
+
+--
+
+ALTER SEQUENCE public."Courses_id_seq" OWNED BY public."Courses".id;
+
+
+--
+-- TOC entry 199 (class 1259 OID 17430)
+
+--
+
+CREATE TABLE public."Lessons" (
+    id integer NOT NULL,
+    url character varying(255),
+    description text,
+    "thumbnailUrl" character varying(255),
+    title character varying(255),
+    duration character varying(255),
+    "seqNo" integer,
+    "courseId" integer,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
 );
 
--- Index: "sortByUrl"
-
--- DROP INDEX "sortByUrl";
-
-CREATE UNIQUE INDEX "sortByUrl"
-  ON "Lessons"
-  USING btree
-  (url COLLATE pg_catalog."default");
 
 
 
+--
+-- TOC entry 198 (class 1259 OID 17428)
+
+--
+
+CREATE SEQUENCE public."Lessons_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 
 
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (3, 'angular2-pipes', 'Angular 2 Pipes', 'Learn how to leverage Pipes in Angular 2, both stateless and stateful.', 3, 'https://angular-academy.s3.amazonaws.com/course-logos/pipes.jpg', true, false, true, '2016-05-30 17:19:09.507+02', '2016-06-10 21:54:55.142+02', NULL);
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (2, 'angular2-components-and-directives', 'Angular 2 Components and Directives', 'Learn Components and maybe the most useful feature of Angular 2: Directives.', 2, 'https://angular-academy.s3.amazonaws.com/course-logos/components-and-directives.svg', true, false, true, '2016-05-30 17:19:09.507+02', '2016-06-10 21:54:55.16+02', NULL);
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (5, 'build-an-application-with-angular2', 'Build a Web App with Angular 2 and Firebase', 'Put all the concepts together to build a fully running Angular 2 application using Firebase as the database.', 4, 'https://angular-academy.s3.amazonaws.com/thumbnails/angular_app-firebase-small.jpg', false, false, false, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.671+02', 'https://angular-academy.s3.amazonaws.com/thumbnails/firebase-logo.jpg');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (10, 'angular2-rxjs-observable-data-services', 'RxJs Observable Data Services', 'Use RxJs to build service layers using the Observable Data Service Pattern.', 8, 'https://angular-academy.s3.amazonaws.com/thumbnails/observable-data-services.jpg', true, false, true, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.697+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (7, 'angular2-routing', 'Angular 2 Router', 'Build Single Page Applications with Angular 2 and its powerful Router.', 3, 'https://angular-academy.s3.amazonaws.com/thumbnails/angular2-routing-small.png', false, false, false, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.698+02', '/src/images/router-icon.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (8, 'module-loaders-and-systemjs', 'Module Loaders and Webpack 2', 'Learn how Module Loaders Work - Learn Webpack 2 and its Plugin Ecosystem.', 7, 'https://angular-academy.s3.amazonaws.com/thumbnails/webpack-small.jpg', true, false, true, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.699+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (11, 'angular2-ngrx', 'NgRx Angular 2 Reactive Extensions', 'Learn some of the most useful libraries in the Angular 2 Ecosystem.', 9, 'https://angular-academy.s3.amazonaws.com/thumbnails/ngrx.jpg', true, false, true, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.715+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (12, 'angular2-universal', 'Angular 2 Universal', 'Learn maybe the biggest game changing technology in the Angular 2 Ecosystem.', 10, 'https://angular-academy.s3.amazonaws.com/thumbnails/angular_universal.jpg', true, false, true, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.736+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (4, 'angular2-forms', 'Angular 2 Forms', 'Learn how to build validatable and user-friendly data Forms effectively.', 3, 'https://angular-academy.s3.amazonaws.com/thumbnails/angular-forms-small.png', false, false, false, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.611+02', 'https://angular-academy.s3.amazonaws.com/course-logos/lesson-icons/forms.jpg');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (9, 'angular2-http', 'Angular 2 HTTP and Services', 'Build Services using Observables, learn to use the HTTP module effectively.', 1, 'https://angular-academy.s3.amazonaws.com/thumbnails/angular-http.png', false, false, false, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.632+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (13, 'angular2-progressive-web-applications', 'Angular 2 Progressive Web Apps', 'Learn the Future of Mobile development: Progressive Web Applications.', 11, 'https://angular-academy.s3.amazonaws.com/thumbnails/pwa.jpg', true, false, true, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.75+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (6, 'angular2-advanced-components', 'Angular 2 Advanced Components', 'A deep dive on Components, focusing on commonly needed advanced use cases.', 5, 'https://angular-academy.s3.amazonaws.com/thumbnails/advanced-components.jpg', true, false, true, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.63+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (1, 'getting-started-with-angular2', 'Angular 2 Tutorial For Beginners', 'Establish a solid layer of fundamentals, learn what''s under the hood of Angular 2', 0, 'https://angular-academy.s3.amazonaws.com/thumbnails/angular2-for-beginners-small.png', false, false, false, '2016-05-30 17:19:09.507+02', '2016-10-07 21:16:20.606+02', 'https://angular-academy.s3.amazonaws.com/main-logo/main-page-logo-small-hat.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (14, 'angular2-architecture', 'Angular 2 Architecture', 'Learn how to build next-generation (Post-REST ?) user interfaces in Angular 2.', 12, 'https://angular-academy.s3.amazonaws.com/thumbnails/architecture.jpg', true, false, true, '2016-08-16 15:55:24.236181+02', '2016-10-07 21:16:20.75+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
-INSERT INTO "Courses" (id, url, description, "longDescription", "seqNo", "iconUrl", "comingSoon", "isNew", "isOngoing", "createdAt", "updatedAt", "courseListIcon") VALUES (15, 'angular2-security', 'Angular 2 Security', 'Learn how to build secure Angular 2 Applications Using JSON Web Tokens.', 13, 'https://angular-academy.s3.amazonaws.com/thumbnails/angular2-security.jpg', true, false, true, '2016-08-16 15:59:06.727615+02', '2016-10-07 21:16:20.751+02', 'https://angular-academy.s3.amazonaws.com/course-logos/observables_rxjs.png');
+--
+-- TOC entry 2931 (class 0 OID 0)
+-- Dependencies: 198
+
+--
+
+ALTER SEQUENCE public."Lessons_id_seq" OWNED BY public."Lessons".id;
 
 
+--
+-- TOC entry 2792 (class 2604 OID 17422)
 
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (17, 'angular2-component-events', 'Angular 2 Event Handling', '4:44', 3, 1, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:29.967+02', '2016-10-07 21:16:21.458+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (74, 'angular2-template-driven-forms-ngmodel', 'Angular 2 Template Driven Forms   - NgModel is Not Only For Two-Way Data Binding', '4:59', 0, 4, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:17:36.888+02', '2016-10-07 21:16:24.725+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (182, 'angular2-firebase-logout', 'Setup the Logout Functionality', '1:42', 51, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:35.385+02', '2016-10-07 21:16:33.618+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (92, 'angular2-router-initial-setup', 'Angular 2 Router Setup - Avoid A Pitfall Right From The Start, Setup Router Debugging', '5:33', 1, 7, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:06.18+02', '2016-10-07 21:16:34.147+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (19, 'angular2-components-styling-component-isolation', 'Styling Angular 2 Components - Learn About Component Style Isolation', '3:27', 5, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:30.014+02', '2016-10-07 21:16:21.463+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (101, 'angular2-router-avoid-memory-leaks', 'Exiting an Angular 2 Route - How To Prevent Memory Leaks', '4:48', 9, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.305+02', '2016-10-07 21:16:35.13+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (105, 'angular2-router-auxiliary-route-parameters', 'Angular 2 Auxiliary Routes - How To Pass Router Parameters', '2:55', 13, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.858+02', '2016-10-07 21:16:35.504+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (168, 'angular2-firebase-choose-ide', 'Choosing an IDE', '1:50', -1, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:29.569+02', '2016-10-06 17:06:57.988+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (108, 'angular2-router-exercise-build-a-dashboard', 'Exercise - Implement a Widget Dashboard With Multiple Auxiliary Routes', '2:50', 18, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:08.387+02', '2016-10-07 21:16:36.018+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (20, 'angular2-components-component-interaction', 'Angular 2 Component Interaction - Extended Components Example', '9:22', 6, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:30.015+02', '2016-10-07 21:16:21.463+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (116, 'angular2-firebase-cli-hello-world', 'Angular 2 Final Application Scaffolding using the Angular CLI', '2:58', 0, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:16:17.567+02', '2016-10-07 21:16:28.407+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (119, 'angular2-firebase-references-and-snapshots', 'Firebase Fundamentals  - References,  Snapshots and Keys', '3:24', 3, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:16:17.569+02', '2016-10-07 21:16:28.813+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (112, 'angular2-lazy-loading-shared-modules', 'Angular 2 Router Lazy Loading and Shared Modules - How to Lazy-Load a Module', '8:43', 16, 7, false, 'https://github.com/angular-university/courses', 'ADVANCED', '2016-09-02 16:31:04.247+02', '2016-10-07 21:16:35.722+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (12, 'angular2-setting-up-a-project-using-typescript-systemjs', 'Angular 2 Development Environment - Start Development Using a Beginner Friendly Playground', '10:56', 23, 1, false, 'https://github.com/angular-university/courses/tree/master/01-getting-started-with-angular2/', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-07-25 20:55:31.536+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (13, 'introduction-to-angular2-running-the-lessons', 'Running the the Lessons Code', '3:00', -2, 1, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:20.889+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (172, 'angular2-firebase-create-form-component', 'Creating the Lesson Form Component - Used both for Edit and for Creation', '6:37', 41, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.333+02', '2016-10-07 21:16:32.567+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (177, 'angular2-firebase-edit-lesson-show-data-in-edit-form', 'Edit Lesson - Passing the Retrieved Data to the Lesson Form', '3:25', 46, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.856+02', '2016-10-07 21:16:33.09+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (16, 'angular2-hello-world-write-first-application', 'Angular 2 Tutorial For Beginners - Build Your First App - Hello World Step By Step', '2:49', 0, 1, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:29.945+02', '2016-10-07 21:16:20.898+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (15, 'angular2-build-your-first-component', 'Building Your First Angular 2 Component - Component Composition', '2:07', 1, 1, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:29.967+02', '2016-10-07 21:16:20.899+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (18, 'angular2-component-templates-internal-vs-external', 'Angular 2 Component Templates - Inline Vs External', '2:55', 4, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:29.988+02', '2016-10-07 21:16:21.464+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (11, 'angular2-debugging-with-augury-or-console', 'How To Debug An Angular 2 Application - Debugging via Augury or the Console', '2:59', 22, 1, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:23.112+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (187, 'angular2-firebase-rounding-up', 'Rounding Up the Course', '01:01', 56, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:35.911+02', '2016-10-06 17:27:09.056+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (50, 'angular2-introduction-to-typescript-the-arrow-operator', 'Introduction To Typescript - The Arrow (=>) Operator', '4:52', 34, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-10 14:47:27.989+02', '2016-10-07 21:16:24.189+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (167, 'angular2-firebase-starter-kit', 'Installing the Starter Kit', '2:14', 1, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:29.571+02', '2016-10-07 21:16:28.427+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (6, 'angular2-core-directives-ngfor', 'Angular 2 Core Directives  - ngFor', '3:46', 11, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:22.008+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (76, 'angular2-ngmodel-bidirectional-binding', 'NgModel - Why Would You Want To Turn Off Two-Way Data Binding ?', '3:44', 1, 4, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:14.349+02', '2016-10-07 21:16:24.724+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (24, 'angular2-write-first-injectable-service', 'Angular 2 Services Tutorial - Writing Your First Service - Learn @Injectable', '3:46', 25, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-01 22:25:57.621+02', '2016-10-07 21:16:23.632+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (46, 'angular2-introduction-to-directives-write-a-custom-directive', 'Angular 2 Directives Tutorial - Write Your First Custom Directive', '4:31', 9, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-10 14:05:54.065+02', '2016-10-07 21:16:22.009+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (48, 'angular2-directives-exercise-improve-collapsible-directive', 'Introduction to Angular 2 Directives - Exercise - Improve the Collapsible Directive', '1:30', 15, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-10 14:05:55.14+02', '2016-10-07 21:16:22.553+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (3, 'angular2-template-syntax-interpolation', 'Angular 2 Template Syntax - Interpolation', '2:41', 18, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:23.103+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (42, 'angular2-http-error-handling', 'Angular 2 Services - HTTP Error Handling', '2:21', 28, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-03 10:25:37.253+02', '2016-10-07 21:16:23.653+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (41, 'angular2-http-how-to-do-an-http-post-call', 'Angular 2 Services - Using the HTTP service to do an HTTP POST ', '5:32', 27, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-03 10:25:36.712+02', '2016-10-07 21:16:23.641+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (75, 'angular2-form-state-classes', 'Angular 2 Form CSS State Classes with NgModel - How to Mark a Field As Mandatory ?', '4:02', 2, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:14.362+02', '2016-10-07 21:16:24.724+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (81, 'angular2-ngmodelgroup', 'Control Groups with ngModelGroup - Validation And Binding', '3:03', 6, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:15.077+02', '2016-10-07 21:16:25.256+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (4, 'angular2-template-syntax-events', 'Template Syntax - Introduction To Zones - How does the Angular 2 event handling mechanism work?', '5:14', 19, 1, true, 'https://github.com/angular-university/courses', 'ADVANCED', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:23.103+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (23, 'anhular-http-do-a-get-call-to-express-server', 'Angular 2 Services - Introduction to the HTTP Service - Do a GET HTTP Server Call', '3:43', 26, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-01 22:25:57.642+02', '2016-10-07 21:16:23.642+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (43, 'angular2-introduction-to-services-exercise', 'Angular 2 Services  - Exercise - Do an HTTP DELETE', '0:54', 31, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-03 10:25:37.254+02', '2016-10-07 21:16:24.183+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (10, 'angular2-guided-tour-pipes', 'Angular 2 Pipes - Learn Why Standard Pipes Might Not Work, Create a Custom Pipe', '5:01', 21, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:23.104+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (87, 'angular2-formcontrol-directive', 'Angular 2 Model Driven Forms - The formControl Directive', '1:57', 12, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:15.629+02', '2016-10-07 21:16:25.789+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (88, 'angular2-custom-validator-form-driven', 'Angular 2 Template Driven Form Custom Validator', '5:44', 14, 4, true, 'https://github.com/angular-university/courses', 'ADVANCED', '2016-07-14 10:56:15.634+02', '2016-10-07 21:16:26.228+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (173, 'angular2-firebase-save-new-lesson', 'Lessons Service - Add Save New Lesson Functionality', '12:58', 42, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.335+02', '2016-10-07 21:16:32.572+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (178, 'angular2-firebase-edit-lesson-implement-lessons-service', 'Edit Lesson - Implement the Save Lesson Service', '3:02', 47, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.863+02', '2016-10-07 21:16:33.095+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (183, 'angular2-firebase-redirect-to-login-router-guard', 'Redirect User To Login Page Using a Router Guard', '5:33', 52, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:35.391+02', '2016-10-07 21:16:33.621+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (5, 'angular2-guided-tour-components', 'Guided Tour to Angular 2 Components', '5:57', 20, 1, true, 'https://github.com/angular-university/courses/tree/master/01-getting-started-with-angular2/', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-07-25 20:55:31.53+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (100, 'angular2-router-child-routes', 'Child Routes - How To Setup a Master Detail Route - What Are Componentless Routes ?', '4:09', 5, 7, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.271+02', '2016-10-07 21:16:34.668+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (103, 'angular2-router-auxiliary-routes', 'Configure Auxiliary Routes in the Angular 2 Router - What is the Difference Towards a Primary Route?', '5:16', 12, 7, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.838+02', '2016-10-07 21:16:35.194+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (77, 'angular2-standard-validators', 'Angular 2 Standard Form Validators How do Template Driven Forms Work Under The Hood ?', '3:32', 3, 4, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:14.379+02', '2016-10-07 21:16:24.729+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (80, 'angular2-model-driven-reactive-forms', 'Angular 2 Reactive or Model Driven Forms - formGroup and formControlName', '4:07', 7, 4, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:15.068+02', '2016-10-07 21:16:25.257+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (169, 'angular2-firebase-router-navigate-detail-to-lesson', 'Navigating From Lesson To Lesson - Part 1', '5:17', 37, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:33.863+02', '2016-10-07 21:16:32.052+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (85, 'angular2-model-driven-forms-errors', 'Angular 2 Model Driven Forms - Mark Fields in Error', '2:08', 11, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:15.62+02', '2016-10-07 21:16:25.79+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (58, 'angular2-what-is-an-observable', 'What is an Observable ? Introduction to Streams and RxJs Observables', '5:41', 0, 9, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-16 17:25:37.294+02', '2016-10-07 21:16:26.747+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (7, 'angular2-core-directives-ngclass-ngstyle', 'Angular 2 Core Directives - ngClass and ngStyle', '3:15', 12, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:22.545+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (69, 'angular2-how-to-setup-an-http-request-sequence-using-the-rxjs-switchmap-operator', 'How to setup an HTTP request sequence using the RxJs switchMap Operator', '4:33', 10, 9, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-06-17 12:46:13.787+02', '2016-10-07 21:16:27.783+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (60, 'angular2-observables-error-handling-and-completion-network-calls-as-observables', 'Observables Error Handling and Completion - How do Observables handle Errors?', '5:28', 1, 9, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-17 11:22:44.281+02', '2016-10-07 21:16:26.846+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (70, 'angular2-retry-http-requests-in-error-using-the-retry-and-retrywhen-rxjs-operators', 'Retry HTTP requests in Error using the retry and retryWhen RxJs Operators', '3:42', 11, 9, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-06-17 12:46:13.875+02', '2016-10-07 21:16:27.884+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (71, 'angular2-how-to-cancel-an-http-request-using-an-rxjs-subscription', 'How to Cancel an HTTP Request using an RxJs Subscription', '2:56', 12, 9, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-06-17 12:46:13.878+02', '2016-10-07 21:16:27.893+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (49, 'angular2-directives-exercise-solution-improve-collapsible-directive', 'Introduction to Angular 2 Directives - Exercise Solution', '2:40', 16, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-10 14:05:55.146+02', '2016-10-07 21:16:22.553+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (174, 'angular2-firebase-custom-url-validator', 'Add New Lesson - Add a Custom Url Field Validator', '3:05', 43, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.407+02', '2016-10-07 21:16:32.575+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (179, 'angular2-firebase-authentication-login-page', 'Setup Firebase Authentication, Create a Login Page', '8:52', 48, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.929+02', '2016-10-07 21:16:33.094+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (184, 'angular2-firebase-rest', 'REST and Firebase - Using the Firebase REST API', '8:25', 53, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:35.452+02', '2016-10-07 21:16:33.621+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (68, 'angular2-how-to-do-two-http-requests-in-parallel-using-the-rxjs-combinelatest-operator', 'How to do two HTTP Requests in Parallel using the RxJs combineLatest Operator', '3:58', 9, 9, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-06-17 12:46:13.362+02', '2016-10-07 21:16:27.393+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (99, 'angular2-router-optional-route-parameters', 'Optional Route Query Parameters - The queryParams Directive and the Query Parameters Observable', '2:38', 8, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.27+02', '2016-10-07 21:16:34.99+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (72, 'angular2-exercise-improve-a-search-service-and-build-a-typeahead', 'Exercise - Improve a Search Service and Build a Typeahead', '3:15', 13, 9, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-06-17 12:46:13.878+02', '2016-10-07 21:16:27.908+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (106, 'angular2-router-redirects-path-matching', 'Angular 2 Router Redirects and Path Matching - Avoid Common Routing Pitfall', '2:59', 14, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.866+02', '2016-10-07 21:16:35.643+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (59, 'angular2-', 'When To Use Template Driven Vs Model Driven Forms ? It Might Surprise You', '6:10', 15, 9, false, 'https://github.com/angular-university/courses/tree/master/01-getting-started-with-angular2/', 'BEGINNER', '2016-06-17 11:02:05.708+02', '2016-07-14 10:51:02.929+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (45, 'angular2-introduction-to-services-exercise-solution', 'Angular 2 Services - Exercise Solution - Do an HTTP DELETE', '3:55', 32, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-03 10:25:37.259+02', '2016-10-07 21:16:24.188+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (51, 'angular2-introduction-to-typescript-high-level-overview', 'Introduction to Typescript - High-level Overview', '7:00', 32, 1, true, 'https://github.com/angular-university/courses/tree/master/01-getting-started-with-angular2/', 'BEGINNER', '2016-06-10 14:47:27.988+02', '2016-07-25 20:55:32.629+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (93, 'angular2-router-styling-active-routes', 'Styling Active Routes With The routerLinkActive And routerLinkActiveOptions Directives', '2:00', 4, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:06.205+02', '2016-10-07 21:16:34.611+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (90, 'angular2-signup-form', 'Angular 2 Forms Section Exercise - Build a Signup Form', '1:34', 17, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:16.158+02', '2016-10-07 21:16:26.334+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (175, 'angular2-firebase-edit-lesson-initial-setup', 'Edit Lesson - Initial Screen Setup', '2:35', 44, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.567+02', '2016-10-07 21:16:32.937+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (91, 'angular2-signup-form-example', 'Exercise - Build an Angular 2 Signup Form - Lets do a little Functional Programming', '6:10', 18, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:16.172+02', '2016-10-07 21:16:26.335+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (62, 'angular2-observable-map-operator-how-to-create-an-observable-from-another', 'The RxJs Map Operator - How to create an Observable from another Observable', '3:04', 5, 9, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-17 12:32:57.146+02', '2016-10-07 21:16:27.267+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (83, 'angular2-formbuilder', 'Building Reactive or Model Driven Forms using the FormBuilder', '2:13', 9, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:15.076+02', '2016-10-07 21:16:25.718+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (22, 'angular2-components-exercise-solution', 'Angular 2 Components Tutorial For Beginners - Components Exercise Solution Inside', '2:08', 8, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:30.033+02', '2016-10-07 21:16:22.002+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (180, 'angular2-firebase-authentication-observable-data-service', 'Building an Authentication Observable Data Service', '7:06', 49, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:35.094+02', '2016-10-07 21:16:33.45+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (118, 'angular2-firebase-typescript', 'Use Firebase SDK with Typescript - Preparing to Run a Firebase Database Population Script', '3:18', 4, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:16:17.593+02', '2016-10-07 21:16:28.922+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (185, 'angular2-firebase-security-rules', 'Protect Write Access Using Security Rules', '1:34', 54, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:35.63+02', '2016-10-07 21:16:33.964+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (157, 'angular2-firebase-join-3', 'Joins in Firebase - Performance Considerations', '7:39', 28, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:19.844+02', '2016-10-07 21:16:31.393+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (154, 'angular2-setup-dev-environment-1', 'Setting Up an Angular 2 Development Environment', '8:47', -3, 1, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-09-30 10:32:13.193+02', '2016-10-07 21:16:20.888+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (144, 'angular2-firebase-home-screen', 'Starting the Application From the Beginning - Build the Home Screen', '3:33', 16, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:14.926+02', '2016-10-07 21:16:29.98+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (47, 'angular2-directives-inputs-outputs-event-emitters', 'Angular 2 Directives - Inputs, Output Event Emitters and How To Export Template References', '4:01', 10, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-10 14:05:54.592+02', '2016-10-07 21:16:22.009+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (137, 'angular2-angular-cli', 'Getting Started with Angular 2 - Off the Ground Running with the Angular CLI', '8:47', -1, 1, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-09-25 20:47:01.476+02', '2016-10-07 21:16:20.898+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (162, 'angular2-firebase-pagination-3', 'Firebase Pagination Concluded - Loading the Previous Page', '2:11', 33, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:20.364+02', '2016-10-07 21:16:31.905+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (96, 'angular2-router-home-route-fallback-route', 'Configuring a Home Route and Fallback Route - Learn An Essential Routing Concept', '2:55', 3, 7, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:06.199+02', '2016-10-07 21:16:34.477+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (86, 'angular2-custom-validator-model-driven', 'Angular 2 Model Driven Form Custom Validator', '3:05', 13, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:15.629+02', '2016-10-07 21:16:25.789+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (170, 'angular2-firebase-detail-navigation-route-params-observable', 'Navigating From Lesson To Lesson - The Route Params Observable', '4:48', 39, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.031+02', '2016-10-07 21:16:32.423+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (102, 'angular2-router-can-activate-guard', 'CanActivate Route Guard - An Example of An Asynchronous Route Guard', '3:31', 11, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.838+02', '2016-10-07 21:16:35.195+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (67, 'angular2-how-to-do-multiple-http-requests-using-the-rxjs-concat-operator', 'How to do multiple HTTP requests using the RxJs Concat Operator', '4:19', 8, 9, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-06-17 12:46:13.319+02', '2016-10-07 21:16:27.391+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (133, 'angular2-firebase-arrays', 'Firebase Arrays - Does Firebase Support Arrays ? ', '5:34', 9, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:22:37.174+02', '2016-10-07 21:16:29.445+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (150, 'angular2-firebase-router-config', 'Setting Up the Router Configuration of our Application', '4:47', 21, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:15.458+02', '2016-10-07 21:16:30.498+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (107, 'angular2-router-hash-location-strategy', 'Angular 2 Router Hash Location Strategy vs HTML5 Location Strategy', '3:04', 15, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:08.384+02', '2016-10-07 21:16:35.719+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (97, 'angular2-router-manual-navigation', 'Programmatic Router Navigation via the Router API - Relative And Absolute Router Navigation', '3:59', 6, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.269+02', '2016-10-07 21:16:34.671+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (53, 'angular2-introduction-to-typescript-array-spread-operator-object-destructuring', 'Introduction To Typescript - The Array Spread Operator, Object Destructuring and more', '4:54', 35, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-10 14:47:27.99+02', '2016-10-07 21:16:24.196+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (54, 'angular2-introduction-to-typescript-imports-and-exports', 'Introduction To Typescript - Imports and Exports - One of the main missing features of ES5 ?', '4:32', 36, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-10 14:47:28.017+02', '2016-10-07 21:16:24.691+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (113, 'angular2-shared-modules-service-configuration', 'Shared Modules And Lazy Loading - How to Setup Shared Services', '6:39', 17, 7, true, 'https://github.com/angular-university/courses', 'ADVANCED', '2016-09-02 16:31:04.607+02', '2016-10-07 21:16:35.721+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (8, 'angular2-core-directives-ngIf', 'Angular 2 Core Directives - ngIf', '3:56', 13, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:22.547+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (84, 'angular2-reactive-forms-rxjs', 'Reactive Forms with RxJs - Learn Why They Are more Powerful than Template Driven', '6:23', 10, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:15.417+02', '2016-10-07 21:16:25.784+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (61, 'angular2-observable-composition-combine-latests', 'Observable Composition - combine multiple Observables Using combineLatest', '5:59', 6, 9, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-17 12:32:57.158+02', '2016-10-07 21:16:27.363+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (110, 'angular2-ngmodule', 'Angular 2 Modularity - @NgModule and Feature Modules - Learn why a Component Might Not Be Visible', '4:48', 30, 1, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-09-02 15:52:42.033+02', '2016-10-07 21:16:24.162+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (171, 'angular2-firebase-create-new-lesson', 'The Create New Lesson Form', '5:21', 40, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.035+02', '2016-10-07 21:16:32.552+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (186, 'angular2-firebase-node-queue', 'Build a Custom Node Backend Using Firebase Queue', '11:46', 55, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:35.635+02', '2016-10-07 21:16:34.09+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (176, 'angular2-firebase-edit-lesson-router-resolve', 'Edit Lesson - Retrieve Lesson using the Router Resolve Functionality', '7:54', 45, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:34.569+02', '2016-10-07 21:16:33.065+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (79, 'angular2-form-field-errors', 'How to display Form Field Validation Error Messages with NgModel', '3:28', 5, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:14.895+02', '2016-10-07 21:16:25.252+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (145, 'angular2-firebase-service-layer-example', 'Building our First Firebase Service - The Lessons Service', '7:24', 17, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:14.93+02', '2016-10-07 21:16:29.984+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (2, 'angular2-template-syntax-properties', 'Angular 2 Template Syntax - Properties', '5:12', 17, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:23.094+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (146, 'angular2-firebase-smart-vs-presentation-components', 'Angular 2 Smart Components vs Presentation Components: What''s the Difference and When to Use Each ?', '4:36', 18, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:14.969+02', '2016-10-07 21:16:30.364+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (52, 'angular2-introduction-to-typescript-classes-and-interfaces', 'Introduction To Typescript - Classes and Interfaces', '3:47', 33, 1, true, 'https://github.com/angular-university/courses/tree/master/01-getting-started-with-angular2/', 'BEGINNER', '2016-06-10 14:47:27.989+02', '2016-09-25 21:35:33.363+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (66, 'angular2-how-to--aAvoid-duplicate-http-requests-rxjs-cache-operator', 'Avoid the Biggest Pitfall of Angular 2 HTTP - Learn the RxJs Cache Operator', '5:10', 7, 9, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-06-17 12:46:13.312+02', '2016-10-07 21:16:27.378+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (73, 'angular2-exercise-solution-learn-how-to-build-a-typeahead-that-cancels-obsolete-search-requests', 'Exercise Solution - Learn How to build a Typeahead that cancels obsolete search requests', '5:07', 14, 9, true, 'https://github.com/angular-university/courses', 'INTERMEDIATE', '2016-06-17 12:46:13.903+02', '2016-10-07 21:16:27.911+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (114, 'what-is-a-single-page-application', 'What is a Single Page Application ? Learn Why They Might Become More Frequent In The Future', '4:00', 0, 7, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-09-20 13:16:05.526+02', '2016-10-07 21:16:34.144+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (89, 'angular2-template-driven-vs-model-driven-forms', 'When To Use Angular 2 Template Driven Vs Model Driven Forms, and Why ? ', '5:04', 16, 4, false, 'https://github.com/angular-university/courses', 'ADVANCED', '2016-07-14 10:56:15.937+02', '2016-10-07 21:16:26.331+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (98, 'angular2-router-navigation-parameters', 'Master Detail Navigation And Route Parameters  - The Route Parameters Observable', '6:03', 7, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.27+02', '2016-10-07 21:16:34.674+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (104, 'angular2-router-can-deactivate-guard', 'CanDeactivate Route Guard - How To Confirm If The User Wants To Exit A Route', '4:42', 10, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:07.839+02', '2016-10-07 21:16:35.191+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (44, 'angular2-rest-api-http-server-development', 'How to Setup a Development REST API HTTP Server with Express and ts-node', '2:46', 29, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-03 10:25:37.254+02', '2016-10-07 21:16:23.653+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (109, 'angular2-router-exercise-solution-build-a-dashboard', 'Exercise Solution - Implement a Widget Dashboard With Multiple Auxiliary Routes', '4:41', 19, 7, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:08.387+02', '2016-10-07 21:16:36.157+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (147, 'angular2-firebase-typescript-pitfall', 'Pitfall of Using Typescript Classes when Querying Data From a Backend', '6:21', 19, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:14.972+02', '2016-10-07 21:16:30.477+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (149, 'angular2-firebase-navigation-menu', 'Building a Navigation Menu Using The Angular 2 Router', '5:53', 22, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:15.456+02', '2016-10-07 21:16:30.501+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (181, 'angular2-firebase-user-registration-page', 'Build a User Registration Page', '3:50', 50, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-10-06 17:01:35.106+02', '2016-10-07 21:16:33.579+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (151, 'angular2-firebase-master-detail', 'Setting Up the Master Screen of the Master Detail Pattern', '6:46', 23, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:15.486+02', '2016-10-07 21:16:30.879+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (94, 'angular2-router-navigation', 'Navigate Between Angular 2 Routes - Several Ways Of Using the routerLink Directive', '3:18', 2, 7, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-22 13:11:06.198+02', '2016-10-07 21:16:34.15+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (134, 'angular2-firebase-data-modelling', 'Firebase Data Modeling 101 - How To Model Data In Firebase ?', '4:11', 7, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:22:37.173+02', '2016-10-07 21:16:28.946+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (140, 'angular2-firebase-list-push', 'How to Write Data to the Database using AngularFire 2 ? Adding Elements to a List', '3:52', 12, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 16:44:44.433+02', '2016-10-07 21:16:29.468+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (142, 'angular2-firebase-list-remove', 'How To Remove an Element from a List using AngularFire 2 ?', '3:08', 13, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:14.406+02', '2016-10-07 21:16:29.847+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (95, 'angular2-router-introduction', 'Angular 2 Router Demo - Why Build Single Applications ?', '4:00', 0, 7, false, 'https://github.com/angular-university/courses/tree/master/01-getting-started-with-angular2/', 'BEGINNER', '2016-07-22 13:11:06.17+02', '2016-07-22 19:39:03.616+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (148, 'angular2-firebase-client-side-search', 'How To Implement Client-Side Search in Angular 2 ?', '4:00', 20, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:15.348+02', '2016-10-07 21:16:30.485+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (141, 'angular2-firebase-list-update', 'How To Update an Element in a Firebase List using AngularFire 2 ?', '1:11', 14, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:14.406+02', '2016-10-07 21:16:29.961+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (166, 'angular2-firebase-install-node-and-demo-app', 'Installing Node and the Angular 2 and Firebase Demo Application', '4:45', -2, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:50:35.241+02', '2016-10-07 21:16:28.403+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (115, 'angular2-firebase-sdk-hello-world', 'Firebase Real-Time Database Hello World - First Query - Debug Websockets !', '8:15', 2, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:16:17.568+02', '2016-10-07 21:16:28.43+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (123, 'angular2-populate-firebase-db-ts-node', 'Populate a Firebase Database with a Node Program - Use Typescript with Node using ts-node', '4:24', 5, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:16:18.338+02', '2016-10-07 21:16:28.927+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (136, 'angular2-firebase-db-script-explained', 'Populate a Firebase Database -Initialization Script Explained Step By Step', '3:53', 6, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:22:37.165+02', '2016-10-07 21:16:28.943+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (152, 'angular2-firebase-master-detail-navigation', 'Configuring the Angular 2 Router for Master To Detail Navigation', '3:23', 24, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:15.499+02', '2016-10-07 21:16:30.993+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (135, 'angular2-firebase-database-ekeys', 'Firebase Key Generation - How to use the Firebase Push Keys, Should We Use Them and Why ?', '3:09', 8, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:22:37.174+02', '2016-10-07 21:16:29.327+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (82, 'angular2-model-driven-forms-validation', 'Angular 2 Form  Validation in Model Driven Forms - Configuring a Form Validator', '2:29', 8, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:15.077+02', '2016-10-07 21:16:25.256+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (111, 'angular2-set-form-value-reset-form', 'Angular 2 Model Driven Forms - How to Set a Form Value and Reset a Form', '4:48', 15, 4, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-09-02 16:24:08.915+02', '2016-10-07 21:16:26.32+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (14, 'angular2-passing-data-to-component-using-input', 'Component @Input - How To Pass Input Data To an Angular 2 Component', '2:33', 2, 1, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:29.966+02', '2016-10-07 21:16:21.457+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (63, 'how-does-angular2-use-observables-http-response-object', 'How does Angular 2 HTTP use Observables ? The HTTP Response object', '4:32', 2, 9, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-17 12:46:12.757+02', '2016-10-07 21:16:26.858+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (64, 'angular2-how-to-use-observables-and-http-to-build-a-servicelayer', 'How to use Observables and HTTP to build a Service Layer', '4:32', 3, 9, false, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-17 12:46:13.26+02', '2016-10-07 21:16:26.87+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (21, 'angular2-components-exercise', 'Angular 2 Components Tutorial For Beginners - Components Exercise !', '1:26', 7, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:30.024+02', '2016-10-07 21:16:22.001+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (65, 'angular2-how-to-use-the-async-pipe-to-pass-observables-into-a-template', 'Introduction to Functional Reactive Programming - Using the Async Pipe - Pitfalls to Avoid', '4:36', 4, 9, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-06-17 12:46:13.311+02', '2016-10-07 21:16:26.872+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (9, 'angular2-guided-tour-directives', 'Directives Guided Tour - Learn Why Directives Might be a Better Choice Than Components', '7:58', 14, 1, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-05-30 17:19:09.547+02', '2016-10-07 21:16:22.545+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (117, 'angular2-firebase-demo-course-intro', 'Build an Application with Angular 2 and Firebase - Application Demo and Course Objectives', '6:51', -3, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-23 20:16:17.566+02', '2016-10-07 21:16:28.297+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (153, 'angular2-firebase-master-detail-detail-screen', 'Setting Up the Detail Screen of a Master Detail Setup', '5:03', 25, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:15.866+02', '2016-10-07 21:16:31.001+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (143, 'angular2-firebase-object-set-update', 'How to Modify an Object in Firebase using AngularFire 2, what is the Difference Between Set and Update?', '3:31', 15, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 17:53:14.83+02', '2016-10-07 21:16:29.97+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (78, 'angular2-form-exports', 'Understanding Angular 2 Form Exports -  Disable a Form Button Until the Form is Valid', '3:15', 4, 4, true, 'https://github.com/angular-university/courses', 'BEGINNER', '2016-07-14 10:56:14.379+02', '2016-10-07 21:16:25.202+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (138, 'angular2-firebase-list-observable', 'AngularFire 2 Hello World - How To Write your First Query using AngularFire 2 List Observables ?', '7:43', 10, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 16:44:44.347+02', '2016-10-07 21:16:29.457+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (139, 'angular2-firebase-object-observable', 'AngularFire 2 Object Observables - How to Read Objects from a Firebase Database?', '2:19', 11, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-28 16:44:44.429+02', '2016-10-07 21:16:29.466+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (156, 'angular2-firebase-join-1', 'How To Make a Join in Firebase Using AngularFire 2 ? Reading a Course based on its url', '9:30', 26, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:19.502+02', '2016-10-07 21:16:31.014+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (155, 'angular2-firebase-join-2', 'Joins in Firebase Continued - Querying the List Of Lesson Keys Of Lessons that Belong to a Course', '2:51', 27, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:19.504+02', '2016-10-07 21:16:31.016+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (158, 'angular2-rxjs-clean-code', 'How to Write Maintainable RxJs Code ? Some Tips and Tricks on How to Write Clean Reactive Code', '4:53', 29, 5, false, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:19.898+02', '2016-10-07 21:16:31.512+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (159, 'angular2-firebase-pagination-display-course-lessons', 'Displaying the Lessons Per Course in the Course Detail Page', '3:50', 30, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:19.934+02', '2016-10-07 21:16:31.514+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (160, 'angular2-firebase-pagination', 'How To Do Pagination in Firebase ? Loading the First Page of a Paginated Table', '7:52', 31, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:20.063+02', '2016-10-07 21:16:31.53+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (161, 'angular2-firebase-pagination-2', 'Firebase Pagination Continued - Loading the Next Page', '4:12', 32, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:20.08+02', '2016-10-07 21:16:31.533+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (163, 'angular2-firebase-navigate-from-course-to-lesson', 'Navigate From Course Detail to Lesson', '5:17', 34, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:20.435+02', '2016-10-07 21:16:32.036+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (164, 'angular2-firebase-lesson-detail', 'Building a Lesson Detail Component', '4:17', 35, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:20.476+02', '2016-10-07 21:16:32.046+02');
-INSERT INTO "Lessons" (id, url, description, duration, "seqNo", "courseId", pro, "gitHubUrl", tags, "createdAt", "updatedAt") VALUES (165, 'angular2-firebase-security-iframe', 'Angular 2 Security - Adding an iframe to an Angular 2 Template', '4:14', 36, 5, true, 'https://github.com/angular-university/angular-firebase-app', 'BEGINNER', '2016-09-30 10:32:20.585+02', '2016-10-07 21:16:32.053+02');
+--
+
+ALTER TABLE ONLY public."Courses" ALTER COLUMN id SET DEFAULT nextval('public."Courses_id_seq"'::regclass);
+
+
+--
+-- TOC entry 2793 (class 2604 OID 17433)
+
+--
+
+ALTER TABLE ONLY public."Lessons" ALTER COLUMN id SET DEFAULT nextval('public."Lessons_id_seq"'::regclass);
+
+
+--
+-- TOC entry 2921 (class 0 OID 17419)
+-- Dependencies: 197
+
+--
+
+INSERT INTO public."Courses" (id, description, url, "longDescription", "iconUrl", tags, "channelTitle", "channelUrl", "channelId", "seqNo", "createdAt", "updatedAt") VALUES (1, '30 Days to Learn HTML & CSS (Full Course)', 'https://www.youtube.com/playlist?list=PLgGbWId6zgaWZkPFI4Sc9QXDmmOWa1v5F', 'Even if your goal is not to become a web designer, learning HTML and CSS can be an amazing tool to have in your skill-set – both in the workplace, and at home. If this has been on your to-do list for some time, why don’t you take thirty days and join me? Give me around ten minutes every day, and I’ll teach you the essentials of HTML and CSS.For more Web Design courses, see: https://webdesign.tutsplus.com/courses/', 'https://i.ytimg.com/vi/yTHTo28hwTQ/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDRRxEIZSv7coxKikXYwTz4bapQFQ', 'BEGINNER', 'Envato Tuts+', 'https://www.youtube.com/user/TutsPremium', 'UC8lxnUR_CzruT2KA6cb7p0Q', 0, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Courses" (id, description, url, "longDescription", "iconUrl", tags, "channelTitle", "channelUrl", "channelId", "seqNo", "createdAt", "updatedAt") VALUES (2, 'JavaScript30', 'https://www.youtube.com/playlist?list=PLu8EoSxDXHP6CGK4YVJhL_VWetA865GOH', 'A 30 day Vanilla JavaScript Challenge! Grab all the videos, exercises and coded solutions over at https://JavaScript30.com', 'https://i.ytimg.com/vi/VuN8qwZoego/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLC3utIx9wVKvmPBcZs4O0OrIXa9zg', 'INTERMEDIATE', 'Wes Bos', 'https://www.youtube.com/user/wesbos/', 'UCoebwHSTvwalADTJhps0emA', 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Courses" (id, description, url, "longDescription", "iconUrl", tags, "channelTitle", "channelUrl", "channelId", "seqNo", "createdAt", "updatedAt") VALUES (3, 'REST API with Node (Express & MongoDB)', 'https://www.youtube.com/playlist?list=PLSpJkDDmpFZ5rZ5-Aur9WRNsBDSUS-0B9', '', 'https://i.ytimg.com/vi/1XmwszKUNR8/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDQALHVDjwC3xI5dP4Qfh4tlB6Gpg', 'INTERMEDIATE', 'CodeWorkr', 'https://www.youtube.com/channel/UCfYTu_qAO5T7a-8rC_74Ypw', 'UCfYTu_qAO5T7a-8rC_74Ypw', 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Courses" (id, description, url, "longDescription", "iconUrl", tags, "channelTitle", "channelUrl", "channelId", "seqNo", "createdAt", "updatedAt") VALUES (4, 'Advanced JavaScript', 'https://www.youtube.com/playlist?list=PLqrUy7kON1meuCvGp2D6yTglZhPTT_s_f', '', 'https://i.ytimg.com/vi/XskMWBXNbp0/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCqe_0mn_r8odSitIcg8ManucWeQg', 'INTERMEDIATE', 'Tyler McGinnis', 'https://www.youtube.com/channel/UCbAn7pVK2VIyo-UysfWGdZQ', 'UCbAn7pVK2VIyo-UysfWGdZQ', 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+
+
+--
+-- TOC entry 2923 (class 0 OID 17430)
+-- Dependencies: 199
+
+--
+
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (1, 'https://www.youtube.com/watch?v=yTHTo28hwTQ', 'This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_yTHTo28hwTQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_yTHTo28hwTQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_yTHTo28hwTQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Even if your goal is not to become a web designer, learning HTML and CSS can be an amazing tool to have in your skill-set -- both in the workplace, and at home. If this has been on your to-do list for some time, why don''t you take thirty days and join me? Give me around ten minutes every day, and I''ll teach you the essentials of HTML and CSS.
+
+And don''t worry... we start at the beginning!
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_yTHTo28hwTQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_yTHTo28hwTQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/yTHTo28hwTQ/default.jpg', 'Course Introduction (30 Days to Learn HTML and CSS)', '00:00:56', 1, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (2, 'https://www.youtube.com/watch?v=bfqBUDk99Tc', 'In this lesson, you''ll learn how to make a working web page that displays the words, "Hello world."
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_bfqBUDk99Tc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_bfqBUDk99Tc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_bfqBUDk99Tc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_bfqBUDk99Tc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_bfqBUDk99Tc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/bfqBUDk99Tc/default.jpg', 'Day 1: Your First Webpage (30 Days to Learn HTML & CSS)', '00:09:51', 2, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (3, 'https://www.youtube.com/watch?v=-8IoQTg5Ybs', 'Before we continue on with formatting our text, I don''t want you to be using NotePad or Text Edit. Instead, we should be using a code editor that was specifically created for the purposes of writing code.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_-8IoQTg5Ybs&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_-8IoQTg5Ybs&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_-8IoQTg5Ybs&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_-8IoQTg5Ybs&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_-8IoQTg5Ybs&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/-8IoQTg5Ybs/default.jpg', 'Day 2: Finding a Proper Code Editor (30 Days to Learn HTML & CSS)', '00:07:16', 3, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (4, 'https://www.youtube.com/watch?v=KHT6scxGm38', 'Welcome to Day 3. Today we''re going to cover how to create a list of items using HTML.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_KHT6scxGm38&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_KHT6scxGm38&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_KHT6scxGm38&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_KHT6scxGm38&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_KHT6scxGm38&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/KHT6scxGm38/default.jpg', 'Day 3: Lists (30 Days to Learn HTML & CSS)', '00:12:37', 4, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (42, 'https://www.youtube.com/watch?v=RIPYsKx1iiU', 'Today we build a Gmail style interaction for holding shift while you select checkboxes. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/RIPYsKx1iiU/default.jpg', 'JS Checkbox Challenge', '00:11:19', 10, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (43, 'https://www.youtube.com/watch?v=yx-HYerClEA', 'Today we build a custom HTML5 video player interface with HTML, CSS and JavaScript. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/yx-HYerClEA/default.jpg', 'Custom HTML5 Video Player ', '00:24:34', 11, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (44, 'https://www.youtube.com/watch?v=_A5eVOIqGLU', 'Today we learn about Key sequence detection with JavaScript. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/_A5eVOIqGLU/default.jpg', 'JavaScript KONAMI CODE', '00:05:09', 12, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (5, 'https://www.youtube.com/watch?v=Pf8xmAZYZC4', 'While we touched on parent-child relationships in the previous episode, we need to focus on it a little more specifically today.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_Pf8xmAZYZC4&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_Pf8xmAZYZC4&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_Pf8xmAZYZC4&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_Pf8xmAZYZC4&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_Pf8xmAZYZC4&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/Pf8xmAZYZC4/default.jpg', 'Day 4: Parent-Child Relationships (30 Days to Learn HTML & CSS)', '00:05:19', 5, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (6, 'https://www.youtube.com/watch?v=1JFeWDZ-2D8', 'Up until now, we''ve only briefly touched on the idea of headings. Let''s dig a bit deeper and learn about all of the headings that are available to us.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_1JFeWDZ-2D8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_1JFeWDZ-2D8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+utm_campaign=yt_tutsplus_1JFeWDZ-2D8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_1JFeWDZ-2D8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_1JFeWDZ-2D8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_1JFeWDZ-2D8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/1JFeWDZ-2D8/default.jpg', 'Day 5: Heading Tags (30 Days to Learn HTML & CSS)', '00:03:42', 6, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (7, 'https://www.youtube.com/watch?v=P7KU6mqdmJ0', 'Sometimes we need to quote somebody, and we can do that within HTML by using what''s known as the blockquote element.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_P7KU6mqdmJ0&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_P7KU6mqdmJ0&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_P7KU6mqdmJ0&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_P7KU6mqdmJ0&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_P7KU6mqdmJ0&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/P7KU6mqdmJ0/default.jpg', 'Day 6: Blockquotes (30 Days to Learn HTML & CSS)', '00:02:36', 7, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (8, 'https://www.youtube.com/watch?v=xIFZdFeGgoE', 'Today we''re going to learn about anchor tags. They allow us to connect one page to another.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_xIFZdFeGgoE&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_xIFZdFeGgoE&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_xIFZdFeGgoE&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_xIFZdFeGgoE&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_xIFZdFeGgoE&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/xIFZdFeGgoE/default.jpg', 'Day 7: Anchors (30 Days to Learn HTML & CSS)', '00:08:59', 8, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (9, 'https://www.youtube.com/watch?v=o1Vqr1MdRmg', 'In the previous episode we noted how, by default, the browser will make anchor tags blue if you''ve never visited the link before. In this lesson, we''ll learn how to customize this by using an attribute called ''style''. Then, we''ll explore how to achieve the same thing by using a CSS stylesheet.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_o1Vqr1MdRmg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_o1Vqr1MdRmg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_o1Vqr1MdRmg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_o1Vqr1MdRmg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_o1Vqr1MdRmg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/o1Vqr1MdRmg/default.jpg', 'Day 8: Your First Stylesheet (30 Days to Learn HTML & CSS)', '00:09:47', 9, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (10, 'https://www.youtube.com/watch?v=g7js1fW4AZw', 'It''s considered a best practice to always divide your images, CSS files and JavaScript files into their own folders. In this lesson you''ll learn about making sure all of your HTML & CSS projects are well organized and clean.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_g7js1fW4AZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_g7js1fW4AZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_g7js1fW4AZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_g7js1fW4AZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_g7js1fW4AZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/g7js1fW4AZw/default.jpg', 'Day 9: Clean Project Structures (30 Days to Learn HTML & CSS)', '00:01:59', 10, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (11, 'https://www.youtube.com/watch?v=xLDZvePzgK8', 'We want to be able to display an image on our HTML page. In this lesson, we''ll learn the various ways to achieve this.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_xLDZvePzgK8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_xLDZvePzgK8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_xLDZvePzgK8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_xLDZvePzgK8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_xLDZvePzgK8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/xLDZvePzgK8/default.jpg', 'Day 10: Images (30 Days to Learn HTML & CSS)', '00:04:34', 11, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (12, 'https://www.youtube.com/watch?v=28z80vRCHYo', 'Divs are a way to position your content, and allow you to style a variety of elements at once. You''ll use them often as you code in HTML and CSS.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_28z80vRCHYo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_28z80vRCHYo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_28z80vRCHYo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_28z80vRCHYo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_28z80vRCHYo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/28z80vRCHYo/default.jpg', 'Day 11: The Necessity of Divs (30 Days to Learn HTML & CSS)', '00:07:12', 12, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (13, 'https://www.youtube.com/watch?v=4A2NP5TdDBg', 'In today''s lesson, we''re going to be taking a look at IDs and classes. We can use these to assign labels to specific elements so that we can then target them within our stylesheets.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_4A2NP5TdDBg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_4A2NP5TdDBg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_4A2NP5TdDBg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_4A2NP5TdDBg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_4A2NP5TdDBg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/4A2NP5TdDBg/default.jpg', 'Day 12: IDs and Classes (30 Days to Learn HTML & CSS)', '00:08:30', 13, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (45, 'https://www.youtube.com/watch?v=uzRsENVD3W8', 'Today we learn how to use the scroll event to detect when a nav should be fixed.', 'https://i.ytimg.com/vi/uzRsENVD3W8/default.jpg', 'Vanilla JavaScript Slide In on Scroll ', '00:12:58', 13, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (46, 'https://www.youtube.com/watch?v=YnfwDQ5XYF4', 'Today we talk about something that isn''t all that fun, but is important to know - reference vs copy. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/YnfwDQ5XYF4/default.jpg', 'JavaScript Fundamentals: Reference VS Cop', '00:11:29', 14, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (57, 'https://www.youtube.com/watch?v=F1anRyL37lE', 'All about those confusing event things in JavaScript. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/F1anRyL37lE/default.jpg', 'JavaScript Event Capture, Propagation and Bubbling ', '00:09:10', 25, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (14, 'https://www.youtube.com/watch?v=bEuTfgwb6lU', 'For today, you''re not going to be learning from me specifically -- you''re going to put some of what you''ve learned to the test in your first assignment!
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_bEuTfgwb6lU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_bEuTfgwb6lU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_bEuTfgwb6lU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_bEuTfgwb6lU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_bEuTfgwb6lU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/bEuTfgwb6lU/default.jpg', 'Day 13: An Assignment (30 Days to Learn HTML & CSS)', '00:01:32', 14, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (15, 'https://www.youtube.com/watch?v=yb_xJJXUvyg', 'Welcome back. Today we''re going to work through the solutions to the assignment set yesterday.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_yb_xJJXUvyg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_yb_xJJXUvyg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_yb_xJJXUvyg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_yb_xJJXUvyg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_yb_xJJXUvyg&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/yb_xJJXUvyg/default.jpg', 'Day 14: Assignment Solutions (30 Days to Learn HTML & CSS)', '00:08:37', 15, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (16, 'https://www.youtube.com/watch?v=4qEh8bwDW0I', 'Today I''m going to teach you about CSS floats. We can use floats to create the effect of columns.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_4qEh8bwDW0I&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_4qEh8bwDW0I&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_4qEh8bwDW0I&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_4qEh8bwDW0I&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_4qEh8bwDW0I&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/4qEh8bwDW0I/default.jpg', 'Day 15: Floats, and a Simple Layout (30 Days to Learn HTML & CSS)', '00:13:57', 16, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (17, 'https://www.youtube.com/watch?v=f62FD8t4aPU', 'Today we''re going to be focusing on navigation. How would you create a navigation list for your website? This is something that every web site has in common, so it''s really important you learn how to do this.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_f62FD8t4aPU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_f62FD8t4aPU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_f62FD8t4aPU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_f62FD8t4aPU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_f62FD8t4aPU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/f62FD8t4aPU/default.jpg', 'Day 16: Navigation and Lists (30 Days to Learn HTML & CSS)', '00:06:16', 17, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (18, 'https://www.youtube.com/watch?v=4DS4z20ZGyI', '► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_4DS4z20ZGyI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Today we''re going to focus on forms. Contact forms, registration forms... what are the necessary HTML elements we should use to display form fields?
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_4DS4z20ZGyI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_4DS4z20ZGyI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_4DS4z20ZGyI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_4DS4z20ZGyI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/4DS4z20ZGyI/default.jpg', 'Day 17: Introduction to Forms (30 Days to Learn HTML & CSS)', '00:15:47', 18, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (19, 'https://www.youtube.com/watch?v=jnG3mtEhpRQ', 'Often you don''t want to use text for your logo. Even though it makes sense to add the name of your business within an H1 tag, you might prefer to add an image in place of your logo. How would you do that?
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_jnG3mtEhpRQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_jnG3mtEhpRQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_jnG3mtEhpRQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_jnG3mtEhpRQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_jnG3mtEhpRQ&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/jnG3mtEhpRQ/default.jpg', 'Day 18: Image Replacement (30 Days to Learn HTML & CSS)', '00:06:31', 19, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (20, 'https://www.youtube.com/watch?v=AKMgc4rzTrc', 'Today we''re going to take a look at some of the various ways we can style our text. We''ll look at using fonts, color, letter spacing, and size.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_AKMgc4rzTrc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_AKMgc4rzTrc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_AKMgc4rzTrc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_AKMgc4rzTrc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_AKMgc4rzTrc&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/AKMgc4rzTrc/default.jpg', 'Day 19: The Basics of Typography (30 Days to Learn HTML & CSS)', '00:10:21', 20, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (21, 'https://www.youtube.com/watch?v=6Z8I8sOinUo', 'Today we''re going to take a look at something that confuses a lot of beginning HTML and CSS designers, and it''s called positioning. More specifically, the difference between what we call absolute positioning and relative positioning.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_6Z8I8sOinUo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_6Z8I8sOinUo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_6Z8I8sOinUo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_6Z8I8sOinUo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_6Z8I8sOinUo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/6Z8I8sOinUo/default.jpg', 'Day 20: Relative and Absolute Positioning (30 Days to Learn HTML & CSS)', '00:07:39', 21, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (47, 'https://www.youtube.com/watch?v=YL1F4dCUlLc', 'Today we learn all about Local Storage in the browser and how to use something called Event Delegation to handle events on elements created in the future. 
+
+Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/YL1F4dCUlLc/default.jpg', 'How LocalStorage and Event Delegation work', '00:30:24', 15, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (48, 'https://www.youtube.com/watch?v=zaz9gLI-Xac', 'Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/zaz9gLI-Xac/default.jpg', 'CSS Text Shadow on Mouse Move Effect ', '00:11:23', 16, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (22, 'https://www.youtube.com/watch?v=AqAFnB-z8-Q', 'Today we''re going to take a look at fragments. This will teach you the beginning process of converting designs to HTML and CSS.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_AqAFnB-z8-Q&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_AqAFnB-z8-Q&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_AqAFnB-z8-Q&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_AqAFnB-z8-Q&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_AqAFnB-z8-Q&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/AqAFnB-z8-Q/default.jpg', 'Day 21: Creating a Website Fragment (30 Days to Learn HTML & CSS)', '00:30:46', 22, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (23, 'https://www.youtube.com/watch?v=VIgxwR9AVrk', 'Let''s refer back to the markup we created in the previous lesson. Wouldn''t it be helpful to be notified when we make errors in creating our markup?
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_VIgxwR9AVrk&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_VIgxwR9AVrk&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_VIgxwR9AVrk&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_VIgxwR9AVrk&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_VIgxwR9AVrk&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/VIgxwR9AVrk/default.jpg', 'Day 22: The Importance of Validation (30 Days to Learn HTML & CSS)', '00:05:36', 23, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (24, 'https://www.youtube.com/watch?v=65QhaSFuxdo', 'Zen coding is a popular way to rapidly create markup. You can grab it here.
+Update -- It seems that the Zen Coding installation process for Sublime Text 2 has changed a bit in recent months. Refer here for instructions: http://jdfwarrior.tumblr.com/post/13204904090
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_65QhaSFuxdo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_65QhaSFuxdo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_65QhaSFuxdo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_65QhaSFuxdo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_65QhaSFuxdo&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/65QhaSFuxdo/default.jpg', 'Day 23: Zen Coding (30 Days to Learn HTML & CSS)', '00:06:33', 24, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (25, 'https://www.youtube.com/watch?v=IgFfsZfkd24', 'In the next two lessons, I''m going to teach you about using reset stylesheets and grids.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_IgFfsZfkd24&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_IgFfsZfkd24&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_IgFfsZfkd24&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_IgFfsZfkd24&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_IgFfsZfkd24&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/IgFfsZfkd24/default.jpg', 'Day 24: Resets and Normalizing (30 Days to Learn HTML & CSS)', '00:05:02', 25, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (49, 'https://www.youtube.com/watch?v=PEEo-2mRQ7A', 'Today we learn how to sort HTML elements based based on their text content. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/PEEo-2mRQ7A/default.jpg', 'JavaScript Practice: Sorting Band Names without articles ', '00:07:10', 17, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (50, 'https://www.youtube.com/watch?v=SadWPo2KZWg', '', 'https://i.ytimg.com/vi/SadWPo2KZWg/default.jpg', 'How JavaScript''s Array Reduce Works ', '00:12:57', 18, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (51, 'https://www.youtube.com/watch?v=ElWFcBlVk-o', 'today we use getUserMedia and Canvas to capture a video stream from a user''s webcam and manipulate the pixels. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/ElWFcBlVk-o/default.jpg', 'Unreal Webcam Fun with getUserMedia() and HTML5 Canvas ', '00:30:20', 19, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (26, 'https://www.youtube.com/watch?v=tm84gW72KFU', 'It''s fairly common for designers to use CSS frameworks. They''re a collection of styles that make it easier to build our designs. One of the most popular is called the 960 Grid System, and this is the framework that we''ll explore today.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_tm84gW72KFU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_tm84gW72KFU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_tm84gW72KFU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_tm84gW72KFU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_tm84gW72KFU&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/tm84gW72KFU/default.jpg', 'Day 25: CSS Frameworks (30 Days to Learn HTML & CSS)', '00:17:51', 26, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (27, 'https://www.youtube.com/watch?v=CilS1-ukeUA', 'Now that you''ve learned the basics of HTML and CSS, it''s time to start doing what you really want to be doing: building websites! We''re going to get started converting a Photoshop design into a real website.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_CilS1-ukeUA&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_CilS1-ukeUA&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_CilS1-ukeUA&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_CilS1-ukeUA&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_CilS1-ukeUA&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/CilS1-ukeUA/default.jpg', 'Day 26: Final Project Markup (30 Days to Learn HTML & CSS)', '00:11:31', 27, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (28, 'https://www.youtube.com/watch?v=j4kTLpezHDI', 'When we last left off we''d finished our markup, so let''s return to Photoshop and begin slicing out any necessary assets for our design.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_j4kTLpezHDI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_j4kTLpezHDI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_j4kTLpezHDI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_j4kTLpezHDI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_j4kTLpezHDI&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/j4kTLpezHDI/default.jpg', 'Day 27: Slicing a PSD (30 Days to Learn HTML & CSS)', '00:08:40', 28, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (29, 'https://www.youtube.com/watch?v=Hr9dv5FCpZw', 'In programs like TextMate and Sublime (or whatever program you''re using), they generally have some snippets built in. But often, it''s best to create your own customized snippets to help you code more efficiently.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_Hr9dv5FCpZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_Hr9dv5FCpZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_Hr9dv5FCpZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_Hr9dv5FCpZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_Hr9dv5FCpZw&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/Hr9dv5FCpZw/default.jpg', 'Day 28: How to Create Snippets (30 Days to Learn HTML & CSS)', '00:03:35', 29, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (52, 'https://www.youtube.com/watch?v=0mJC0A72Fnw', 'Today we learn how to use the built in Speech Recognition in the browser. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/0mJC0A72Fnw/default.jpg', 'JavaScript Speech Recognitio', '00:13:21', 20, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (53, 'https://www.youtube.com/watch?v=X7Cbtra0C6I', 'We make a really sweet compass and speedometer with just JavaScript!  Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/X7Cbtra0C6I/default.jpg', 'JavaScript Geolocation based Speedometer and Compass ', '00:08:51', 21, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (54, 'https://www.youtube.com/watch?v=POP_qri7RA8', 'Today we learn how to make those cool follow along links in JavaScript. This will set us up nicely for the Stripe follow along example we will do in a coming video. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/POP_qri7RA8/default.jpg', 'JavaScript  Exercise: Follow Along Links ', '00:09:25', 22, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (55, 'https://www.youtube.com/watch?v=saCpKH_xdgs', 'We do Speech Synthesis with JavaScript in today''s lesson. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/saCpKH_xdgs/default.jpg', 'JavaScript Text-To-Speech ', '00:16:56', 23, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (56, 'https://www.youtube.com/watch?v=5FLOBCGH3_U', 'Today we learn how to make a sticky nav in JavaScript! Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/5FLOBCGH3_U/default.jpg', 'Vanilla JavaScript Sticky Nav ', '00:10:02', 24, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (30, 'https://www.youtube.com/watch?v=zvSR_2v5xj8', 'In this lesson we''ll begin styling the markup for our website.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_zvSR_2v5xj8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_zvSR_2v5xj8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_zvSR_2v5xj8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_zvSR_2v5xj8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_zvSR_2v5xj8&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/zvSR_2v5xj8/default.jpg', 'Day 29: The CSS for Our Website (30 Days to Learn HTML & CSS)', '00:30:30', 30, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (31, 'https://www.youtube.com/watch?v=I9dNFHasF_U', 'In the previous lesson we built the layout for our website. We need to finish up by tweaking our layout until it''s complete.
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_I9dNFHasF_U&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_I9dNFHasF_U&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://webdesign.tutsplus.com?utm_campaign=yt_tutsplus_I9dNFHasF_U&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_I9dNFHasF_U&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_I9dNFHasF_U&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/I9dNFHasF_U/default.jpg', 'Day 30: Completing the Website (30 Days to Learn HTML & CSS)', '00:17:27', 31, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (32, 'https://www.youtube.com/watch?v=cUgpPAP0lUM', 'This is part of the free Envato Tuts+ course 30 Days to Learn HTML & CSS: https://webdesign.tutsplus.com/courses/30-days-to-learn-html-css?utm_campaign=yt_tutsplus_cUgpPAP0lUM&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Browse WordPress Themes and Plugins: https://elements.envato.com/wordpress?utm_campaign=yt_tutsplus_cUgpPAP0lUM&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+For more great web design courses and tutorials go to: https://tutsplus.com/?utm_campaign=yt_tutsplus_cUgpPAP0lUM&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+We hope you''ve enjoyed learning HTML and CSS with the new Tuts+ Premium. If you''d like to progress to more advanced material, including CSS3, join the mailing list below. We''ll let you know when more web development and design courses are available.
+
+If you know anyone who''d like to learn HTML and CSS, we hope you''ll consider sharing this course with them.
+
+Happy coding!u take thirty days and join me? Give me around ten minutes every day, and I''ll teach you the essentials of HTML and CSS.
+
+And don''t worry... we start at the beginning!
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Envato Tuts+
+Discover free how-to tutorials and online courses. Design a logo, create a website, build an app, or learn a new skill: https://tutsplus.com?utm_campaign=yt_tutsplus_cUgpPAP0lUM&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+Envato Elements
+All the creative assets you need under one subscription. Customize your project by adding unique photos, fonts, graphics, and themes.
+► Download Unlimited Stock Photos, Fonts & Templates with Envato Elements: https://elements.envato.com?utm_campaign=yt_tutsplus_cUgpPAP0lUM&utm_medium=referral&utm_source=youtube.com&utm_content=description
+
+► Subscribe to Envato Tuts+ on YouTube: https://www.youtube.com/tutsplus
+► Follow Envato Tuts+ on Twitter: https://twitter.com/tutsplus
+► Follow Envato Tuts+ on Facebook: https://www.facebook.com/tutsplus
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 'https://i.ytimg.com/vi/cUgpPAP0lUM/default.jpg', 'Course Exit (30 Days to Learn HTML & CSS)', '00:00:40', 32, 1, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (33, 'https://www.youtube.com/watch?v=VuN8qwZoego', 'Day 1 of 30. Let''s make a JavaScript Drum kit and bunch along the way. Get all 30 videos and Starter files for free over at JavaScript30.com.', 'https://i.ytimg.com/vi/VuN8qwZoego/default.jpg', 'Make a JavaScript Drum Kit in Vanilla JS', '00:19:39', 1, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (34, 'https://www.youtube.com/watch?v=xu87YWbr4X0', 'Grab all 30 videos and starter files for free over at https://JavaScript30.com', 'https://i.ytimg.com/vi/xu87YWbr4X0/default.jpg', 'We build a CSS + JS Clock in Vanilla JS', '00:10:44', 2, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (35, 'https://www.youtube.com/watch?v=AHLNzv13c2I', 'Today we learn all about how to use CSS variables and update them with JavaScript. Grab all 30 videos and starter files  over at https://JavaScript30.com', 'https://i.ytimg.com/vi/AHLNzv13c2I/default.jpg', 'Woah! CSS Variables?!', '00:13:14', 3, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (36, 'https://www.youtube.com/watch?v=HB1ZC7czKRs', 'Today we sweat! In order to do the rest of the JavaScript30 exercises, we need to get really good at working with Arrays in JavaScript. Grab all the exercises and code samples at https://JavaScript30.com', 'https://i.ytimg.com/vi/HB1ZC7czKRs/default.jpg', 'JavaScript Array Cardio Practice - Day 1', '00:23:27', 4, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (37, 'https://www.youtube.com/watch?v=9eif30i26jg', 'Today we build a pretty nifty image gallery using Flexbox, CSS transitions and a sprinkle of JS to get things interactive. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/9eif30i26jg/default.jpg', 'Flexbox + JavaScript Image Gallery', '00:13:10', 5, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (38, 'https://www.youtube.com/watch?v=y4gZMJKAeWs', 'Today we build an Ajax type ahead with vanilla JS. Grab all the videos and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/y4gZMJKAeWs/default.jpg', 'Ajax Type Ahead with fetch() ', '00:17:22', 6, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (39, 'https://www.youtube.com/watch?v=QNmRfyNg1lw', 'Day 2 of Array Cardio. Grab all the videos and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/QNmRfyNg1lw/default.jpg', '.some(), .every(), .find() and [...SPREADS] — Array Cardio Day 2', '00:07:16', 7, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (40, 'https://www.youtube.com/watch?v=8ZGAzJ0drl0', 'Day 8 o', 'https://i.ytimg.com/vi/8ZGAzJ0drl0/default.jpg', 'Let''s build something fun with HTML5 Canvas ', '00:18:02', 8, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (41, 'https://www.youtube.com/watch?v=xkzDaKwinA8', 'Hit that Subscribe button for more like this', 'https://i.ytimg.com/vi/xkzDaKwinA8/default.jpg', '14 Must Know Chrome Dev Tools Tricks ', '00:10:36', 9, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (58, 'https://www.youtube.com/watch?v=GvuWJSXYQDU', 'How to re-create the amazing Stripe dropdown follow-along navigation.  Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/GvuWJSXYQDU/default.jpg', 'Stripe Follow Along Dropdown Navigation ', '00:21:12', 26, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (59, 'https://www.youtube.com/watch?v=C9EWifQ5xqA', 'Today we make a pretty neat click and drag to scroll interface where you will learn a whole lot about JavaScript events!', 'https://i.ytimg.com/vi/C9EWifQ5xqA/default.jpg', 'JavaScript Interface Challenge: Click and Drag to Scroll ', '00:14:10', 27, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (60, 'https://www.youtube.com/watch?v=8gYN_EDMg_M', 'Today we build an experimental video speed controller UI. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/8gYN_EDMg_M/default.jpg', 'Build a Experimental Video Speed Controller UI ', '00:09:26', 28, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (61, 'https://www.youtube.com/watch?v=LAaf7-WuJJQ', 'We build a custom JavaScript countdown timer from scratch with Vanilla JavaScript. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/LAaf7-WuJJQ/default.jpg', 'Vanilla JS Countdown Timer ', '00:21:46', 29, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (62, 'https://www.youtube.com/watch?v=toNFfAaWghU', 'You did it! Today we have fun and make a whack-a-mole game. Grab all the exercises and starter files over at https://JavaScript30.com', 'https://i.ytimg.com/vi/toNFfAaWghU/default.jpg', 'Make a Whack A Mole Game with Vanilla JS ', '00:14:35', 30, 2, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (63, 'https://www.youtube.com/watch?v=1XmwszKUNR8', 'Introductory video where I talk about what to expect in the series to come.', 'https://i.ytimg.com/vi/1XmwszKUNR8/default.jpg', 'Express MongoDB REST API #1 - Introduction', '00:07:48', 1, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (64, 'https://www.youtube.com/watch?v=C4DjlL2hcrM', 'First video where we actually do some work! We start of by writing the main app.js file as well as create a folder structure that we''ll keep working on in the videos to come.', 'https://i.ytimg.com/vi/C4DjlL2hcrM/default.jpg', 'Express MongoDB REST API #2 - Code Structure', '00:12:26', 2, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (65, 'https://www.youtube.com/watch?v=_lfDai47SJE', 'In this video we''ll setup the code for the routes and will get started writing our first route!', 'https://i.ytimg.com/vi/_lfDai47SJE/default.jpg', 'Express MongoDB REST API #3 - Routes Design', '00:11:34', 3, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (66, 'https://www.youtube.com/watch?v=L1DGbI-U_e4', 'In this video, we''ll mostly focus on interacting with our MongoDB database using Mongoose.', 'https://i.ytimg.com/vi/L1DGbI-U_e4/default.jpg', 'Express MongoDB REST API #4 - MongoDB/Mongoose', '00:29:34', 4, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (67, 'https://www.youtube.com/watch?v=9tLA4r-gqds', 'In this tutorial, we''ll finally start using Async/Await that''ll make our code much nicer to look at!', 'https://i.ytimg.com/vi/9tLA4r-gqds/default.jpg', 'Express MongoDB REST API #5 - Async/Await', '00:15:21', 5, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (68, 'https://www.youtube.com/watch?v=qAkzBQw_MrY', 'In this video, we''ll continue writing more routes as per our original endpoints spec.', 'https://i.ytimg.com/vi/qAkzBQw_MrY/default.jpg', 'Express MongoDB REST API #6 - More Routes', '00:15:12', 6, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (69, 'https://www.youtube.com/watch?v=FVn_wj1jLN0', 'In this video, we''ll wire up the necessary relationships between models in our routes logic.', 'https://i.ytimg.com/vi/FVn_wj1jLN0/default.jpg', 'Express MongoDB REST API #7 - Relationships', '00:22:49', 7, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (70, 'https://www.youtube.com/watch?v=tJlmAAxwygc', 'In this video, we''ll set up the validation in our API. We won''t just do it, but instead we''ll create a function that''ll allow us to validate any parameter we would need in future!', 'https://i.ytimg.com/vi/tJlmAAxwygc/default.jpg', 'Express MongoDB REST API #8 - Parameters Validation', '00:30:59', 8, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (71, 'https://www.youtube.com/watch?v=36v09ARHshc', 'In this video, we''ll continue where we left off. More precisely, we''ll do the body validation this time and also use both the parameters and body validation functions that we wrote throughout our endpoints.', 'https://i.ytimg.com/vi/36v09ARHshc/default.jpg', 'Express MongoDB REST API #9 - Body Validation', '00:24:46', 9, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (72, 'https://www.youtube.com/watch?v=-bQbI2rcoWI', 'In this video, we''ll begin our work on Cars resource. We''ll start by defining routes and writing corresponding code in Cars controller. We''ll also do the validation as we go.
+
+At around ~17 minute mark my microphone started acting weirdly, so sorry for that. Had no idea about it until the video was finished.', 'https://i.ytimg.com/vi/-bQbI2rcoWI/default.jpg', 'Express MongoDB REST API #10 - Cars Routes Start', '00:22:29', 10, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (73, 'https://www.youtube.com/watch?v=sA5yM3TALA4', 'In this video, we''ll finish our work on cars resource. We''ll continue by defining routes until we''re done. We''ll also do the validation as we go.', 'https://i.ytimg.com/vi/sA5yM3TALA4/default.jpg', 'Express MongoDB REST API #11 - Cars Routes End', '00:22:37', 11, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (74, 'https://www.youtube.com/watch?v=4A-Z7ts7dVg', 'In this video, we finish this playlist and I talk a bit about security and what to do next.', 'https://i.ytimg.com/vi/4A-Z7ts7dVg/default.jpg', 'Express MongoDB REST API #12 - What to do next', '00:03:54', 12, 3, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (75, 'https://www.youtube.com/watch?v=XskMWBXNbp0', 'You can''t get very far in JavaScript without dealing with objects. They''re foundational to  almost every aspect of the JavaScript programming language. In this post you''ll learn about a variety of patterns for instantiating new objects and in doing so, you''ll be gradually led to understanding JavaScript''s prototype in depth.
+
+It may seem surprising, but in my opinion the most important and fundamental concept to understanding the JavaScript language is understanding Execution Context. In this video you''ll not only learn all about Execution Contexts, but also more advanced JavaScript topics like hoisting, the scope chain, and closures.
+
+🚀 Check out our "Advanced JavaScript" course for more detail on this and other JavaScript topics - https://tylermcginnis.com/courses/advanced-javascript/?s=youtube-beginners-guide-to-javascripts-prototype
+
+If you use JavaScript in any capacity, there’s probably not another resource that will benefit you more than this. This course was years in the making. I took everything I know about JavaScript and all my experience teaching it over the last half decade and put it into this one course.
+
+We’ll cover topics like
+  ✅ Execution Contexts 
+  ✅ Blocking vs Non Blocking IO 
+  ✅ Scopes 
+  ✅ The Scope Chain 
+  ✅ The Event Loop 
+  ✅ Closures 
+  ✅ Hoisting 
+  ✅ Instantiation Patterns
+  ✅ FN.prototype 
+  ✅ this, .call, .apply, and .bind 
+  ✅ IIFEs/CommonJS/ES Modules 
+  ✅ Inheritance 
+  ✅ Composition 
+  ✅ Async Patterns
+
+Advanced JavaScript - https://tylermcginnis.com/courses/advanced-javascript/
+
+📺 Subscribe to our channel for more educational content to help you master the JavaScript ecosystem: https://www.youtube.com/tylermcginnis
+
+TylerMcGinnis.com is a linear, project-based approach to mastering the JavaScript ecosystem. Our React courses have been taken by over 80k students with an average rating of 4.8/5. So whether you want to learn more about React Hooks, React Native, React Router, vanilla JavaScript, or all of the above, our in-depth courses and tutorials will teach you everything you need to know about utilizing these technologies in 2019.
+
+🏃 Visit our website for more in-depth, highly-rated educational content to help you master the JavaScript ecosystem: https://tylermcginnis.com/', 'https://i.ytimg.com/vi/XskMWBXNbp0/default.jpg', 'A Beginner''s Guide to JavaScript''s Prototype', '00:28:23', 1, 4, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (76, 'https://www.youtube.com/watch?v=Nt-qa_LlUH0', 'It may seem surprising, but in my opinion the most important and fundamental concept to understanding the JavaScript language is understanding Execution Context. In this video you''ll not only learn all about Execution Contexts, but also more advanced JavaScript topics like hoisting, the scope chain, and closures.
+
+It may seem surprising, but in my opinion the most important and fundamental concept to understanding the JavaScript language is understanding Execution Context. In this video you''ll not only learn all about Execution Contexts, but also more advanced JavaScript topics like hoisting, the scope chain, and closures.
+
+🚀 Check out our "Advanced JavaScript" course for more detail on this and other JavaScript topics - https://tylermcginnis.com/courses/advanced-javascript/?s=youtube-ultimate-guide-to-hoisting-scopes-closures-in-javascript
+
+If you use JavaScript in any capacity, there’s probably not another resource that will benefit you more than this. This course was years in the making. I took everything I know about JavaScript and all my experience teaching it over the last half decade and put it into this one course.
+
+We’ll cover topics like
+  ✅ Execution Contexts 
+  ✅ Blocking vs Non Blocking IO 
+  ✅ Scopes 
+  ✅ The Scope Chain 
+  ✅ The Event Loop 
+  ✅ Closures 
+  ✅ Hoisting 
+  ✅ Instantiation Patterns
+  ✅ FN.prototype 
+  ✅ this, .call, .apply, and .bind 
+  ✅ IIFEs/CommonJS/ES Modules 
+  ✅ Inheritance 
+  ✅ Composition 
+  ✅ Async Patterns
+
+Advanced JavaScript - https://tylermcginnis.com/courses/advanced-javascript/
+
+📺 Subscribe to our channel for more educational content to help you master the JavaScript ecosystem: https://www.youtube.com/tylermcginnis
+
+TylerMcGinnis.com is a linear, project-based approach to mastering the JavaScript ecosystem. Our React courses have been taken by over 80k students with an average rating of 4.8/5. So whether you want to learn more about React Hooks, React Native, React Router, vanilla JavaScript, or all of the above, our in-depth courses and tutorials will teach you everything you need to know about utilizing these technologies in 2019.
+
+🏃 Visit our website for more in-depth, highly-rated educational content to help you master the JavaScript ecosystem: https://tylermcginnis.com/', 'https://i.ytimg.com/vi/Nt-qa_LlUH0/default.jpg', 'The Ultimate Guide to Execution Contexts, Hoisting, Scopes, and Closures in JavaScript', '00:25:35', 2, 4, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (77, 'https://www.youtube.com/watch?v=gB-OmN1egV8', 'In this video you''ll learn about the historical context as well as the pros and cons behind the three most popular JavaScript async patterns - Callbacks, Promises, and Async/Await.
+
+🚀 Check out our "Advanced JavaScript" course for more detail on this and other JavaScript topics - https://tylermcginnis.com/courses/advanced-javascript/?s=youtube-async-javascript-callbacks-promises-async-await
+
+If you use JavaScript in any capacity, there’s probably not another resource that will benefit you more than this. This course was years in the making. I took everything I know about JavaScript and all my experience teaching it over the last half decade and put it into this one course.
+
+We’ll cover topics like
+  ✅ Execution Contexts 
+  ✅ Blocking vs Non Blocking IO 
+  ✅ Scopes 
+  ✅ The Scope Chain 
+  ✅ The Event Loop 
+  ✅ Closures 
+  ✅ Hoisting 
+  ✅ Instantiation Patterns
+  ✅ FN.prototype 
+  ✅ this, .call, .apply, and .bind 
+  ✅ IIFEs/CommonJS/ES Modules 
+  ✅ Inheritance 
+  ✅ Composition 
+  ✅ Async Patterns
+
+Advanced JavaScript - https://tylermcginnis.com/courses/advanced-javascript/
+
+📺 Subscribe to our channel for more educational content to help you master the JavaScript ecosystem: https://www.youtube.com/tylermcginnis
+
+TylerMcGinnis.com is a linear, project-based approach to mastering the JavaScript ecosystem. Our React courses have been taken by over 80k students with an average rating of 4.8/5. So whether you want to learn more about React Hooks, React Native, React Router, vanilla JavaScript, or all of the above, our in-depth courses and tutorials will teach you everything you need to know about utilizing these technologies in 2019.
+
+🏃 Visit our website for more in-depth, highly-rated educational content to help you master the JavaScript ecosystem: https://tylermcginnis.com/', 'https://i.ytimg.com/vi/gB-OmN1egV8/default.jpg', 'The Evolution of Async JavaScript: From Callbacks, to Promises, to Async/Await', '00:45:25', 3, 4, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (78, 'https://www.youtube.com/watch?v=ZxpdR_C7RVA', 'ES6 classes were introduced just a few years ago but because this is JavaScript, there''s already a stage 3 proposal to make the API more enjoyable. In this video we''re going to go over what those changes are and some misconceptions regarding them.
+
+🚀 Check out our "Advanced JavaScript" course for more detail on this and other JavaScript topics - https://tylermcginnis.com/courses/advanced-javascript/?s=javascript-private-public-class-fields
+
+I’m not good at writing sales copy, so just trust me that if you use JavaScript in any capacity, there’s probably not another resource that will benefit you more than this. This course was years in the making. I took everything I know about JavaScript and all my experience teaching it over the last half decade and put it into this one course.
+
+We’ll cover topics like
+  ✅ Execution Contexts 
+  ✅ Blocking vs Non Blocking IO 
+  ✅ Scopes 
+  ✅ The Scope Chain 
+  ✅ The Event Loop 
+  ✅ Closures 
+  ✅ Hoisting 
+  ✅ Instantiation Patterns
+  ✅ FN.prototype 
+  ✅ this, .call, .apply, and .bind 
+  ✅ IIFEs/CommonJS/ES Modules 
+  ✅ Inheritance 
+  ✅ Composition 
+  ✅ Async Patterns
+
+Advanced JavaScript - https://tylermcginnis.com/courses/advanced-javascript/
+
+📺 Subscribe to our channel for more educational content to help you master the JavaScript ecosystem: https://www.youtube.com/tylermcginnis
+
+TylerMcGinnis.com is a linear, project-based approach to mastering the JavaScript ecosystem. Our React courses have been taken by over 80k students with an average rating of 4.8/5. So whether you want to learn more about React Hooks, React Native, React Router, vanilla JavaScript, or all of the above, our in-depth courses and tutorials will teach you everything you need to know about utilizing these technologies in 2019.
+
+🏃 Visit our website for more in-depth, highly-rated educational content to help you master the JavaScript ecosystem: https://tylermcginnis.com/', 'https://i.ytimg.com/vi/ZxpdR_C7RVA/default.jpg', 'JavaScript Private and Public Class Fields', '00:08:30', 4, 4, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (79, 'https://www.youtube.com/watch?v=MiKdRJc4ooE', 'Inheritance is a principle of Object Oriented Programming. In this post you''ll learn how to accomplish inheritance in JavaScript in both ES5 as well as ES6.
+
+🚀 Check out our "Advanced JavaScript" course for more detail on this and other JavaScript topics - https://tylermcginnis.com/courses/advanced-javascript/?s=youtube-javascript-inheritance-prototype-chain
+
+I’m not good at writing sales copy, so just trust me that if you use JavaScript in any capacity, there’s probably not another resource that will benefit you more than this. This course was years in the making. I took everything I know about JavaScript and all my experience teaching it over the last half decade and put it into this one course.
+
+We’ll cover topics like
+  ✅ Execution Contexts 
+  ✅ Blocking vs Non Blocking IO 
+  ✅ Scopes 
+  ✅ The Scope Chain 
+  ✅ The Event Loop 
+  ✅ Closures 
+  ✅ Hoisting 
+  ✅ Instantiation Patterns
+  ✅ FN.prototype 
+  ✅ this, .call, .apply, and .bind 
+  ✅ IIFEs/CommonJS/ES Modules 
+  ✅ Inheritance 
+  ✅ Composition 
+  ✅ Async Patterns
+
+Advanced JavaScript - https://tylermcginnis.com/courses/advanced-javascript/
+
+📺 Subscribe to our channel for more educational content to help you master the JavaScript ecosystem: https://www.youtube.com/tylermcginnis
+
+TylerMcGinnis.com is a linear, project-based approach to mastering the JavaScript ecosystem. Our React courses have been taken by over 80k students with an average rating of 4.8/5. So whether you want to learn more about React Hooks, React Native, React Router, vanilla JavaScript, or all of the above, our in-depth courses and tutorials will teach you everything you need to know about utilizing these technologies in 2019.
+
+🏃 Visit our website for more in-depth, highly-rated educational content to help you master the JavaScript ecosystem: https://tylermcginnis.com/
+
+You can find the full blog post here - 
+https://tylermcginnis.com/javascript-inheritance-and-the-prototype-chain/', 'https://i.ytimg.com/vi/MiKdRJc4ooE/default.jpg', 'JavaScript Inheritance and the Prototype Chain', '00:13:55', 5, 4, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (80, 'https://www.youtube.com/watch?v=7HolHe7Gqbw', 'You''ve probably heard that you should favor composition over inheritance. This post breaks down why that is by looking at where inheritance breaks down and composition shines.
+
+🚀 Check out our "Advanced JavaScript" course for greater detail on this and other JavaScript topics - https://tylermcginnis.com/courses/advanced-javascript/?s=youtube-javascript-inheritance-vs-composition
+
+I’m not good at writing sales copy, so just trust me that if you use JavaScript in any capacity, there’s probably not another resource that will benefit you more than this. This course was years in the making. I took everything I know about JavaScript and all my experience teaching it over the last half decade and put it into this one course.
+
+We’ll cover topics like
+  ✅ Execution Contexts 
+  ✅ Blocking vs Non Blocking IO 
+  ✅ Scopes 
+  ✅ The Scope Chain 
+  ✅ The Event Loop 
+  ✅ Closures 
+  ✅ Hoisting 
+  ✅ Instantiation Patterns
+  ✅ FN.prototype 
+  ✅ this, .call, .apply, and .bind 
+  ✅ IIFEs/CommonJS/ES Modules 
+  ✅ Inheritance 
+  ✅ Composition 
+  ✅ Async Patterns
+
+Advanced JavaScript - https://tylermcginnis.com/courses/advanced-javascript/
+
+📺 Subscribe to our channel for more educational content to help you master the JavaScript ecosystem: https://www.youtube.com/tylermcginnis
+
+TylerMcGinnis.com is a linear, project-based approach to mastering the JavaScript ecosystem. Our React courses have been taken by over 80k students with an average rating of 4.8/5. So whether you want to learn more about React Hooks, React Native, React Router, vanilla JavaScript, or all of the above, our in-depth courses and tutorials will teach you everything you need to know about utilizing these technologies in 2019.
+
+🏃 Visit our website for more in-depth, highly-rated educational content to help you master the JavaScript ecosystem: https://tylermcginnis.com/', 'https://i.ytimg.com/vi/7HolHe7Gqbw/default.jpg', 'JavaScript Composition vs Inheritance', '00:06:16', 6, 4, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (81, 'https://www.youtube.com/watch?v=YliiOCGNfns', 'This video walks you through how to recreate the basic functionality of a JavaScript array, enabling you to explore certain patterns and features of the JavaScript language in a practical exercise.
+
+🚀 Check out our "Advanced JavaScript" course for greater detail on this and other JavaScript topics - https://tylermcginnis.com/courses/advanced-javascript/?s=youtube-creating-your-own-implementation-of-array
+ 
+I’m not good at writing sales copy, so just trust me that if you use JavaScript in any capacity, there’s probably not another resource that will benefit you more than this. This course was years in the making. I took everything I know about JavaScript and all my experience teaching it over the last half decade and put it into this one course.
+
+We’ll cover topics like
+  ✅ Execution Contexts 
+  ✅ Blocking vs Non Blocking IO 
+  ✅ Scopes 
+  ✅ The Scope Chain 
+  ✅ The Event Loop 
+  ✅ Closures 
+  ✅ Hoisting 
+  ✅ Instantiation Patterns
+  ✅ FN.prototype 
+  ✅ this, .call, .apply, and .bind 
+  ✅ IIFEs/CommonJS/ES Modules 
+  ✅ Inheritance 
+  ✅ Composition 
+  ✅ Async Patterns
+
+Advanced JavaScript - https://tylermcginnis.com/courses/advanced-javascript/
+
+📺 Subscribe to our channel for more educational content to help you master the JavaScript ecosystem: https://www.youtube.com/tylermcginnis
+
+TylerMcGinnis.com is a linear, project-based approach to mastering the JavaScript ecosystem. Our React courses have been taken by over 80k students with an average rating of 4.8/5. So whether you want to learn more about React Hooks, React Native, React Router, vanilla JavaScript, or all of the above, our in-depth courses and tutorials will teach you everything you need to know about utilizing these technologies in 2019.
+
+🏃 Visit our website for more in-depth, highly-rated educational content to help you master the JavaScript ecosystem: https://tylermcginnis.com/', 'https://i.ytimg.com/vi/YliiOCGNfns/default.jpg', 'Creating your own JavaScript Array', '00:12:32', 7, 4, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+INSERT INTO public."Lessons" (id, url, description, "thumbnailUrl", title, duration, "seqNo", "courseId", "createdAt", "updatedAt") VALUES (82, 'https://www.youtube.com/watch?v=qJWALEoGge4', 'Consistently the most commonly under-learned aspect of JavaScript is the module system. There''s good reason for that. Modules in JavaScript have a strange and erratic history. In this post we''ll walk through that history, and you''ll learn modules of the past to better understand how JavaScript modules work today. 
+
+🚀 Check out our "Advanced JavaScript" course for greater detail on this and other JavaScript topics: https://tylermcginnis.com/courses/advanced-javascript/
+
+I’m not good at writing sales copy, so just trust me that if you use JavaScript in any capacity, there’s probably not another resource that will benefit you more than this. This course was years in the making. I took everything I know about JavaScript and all my experience teaching it over the last half decade and put it into this one course.
+
+We’ll cover topics like
+  ✅ Execution Contexts 
+  ✅ Blocking vs Non Blocking IO 
+  ✅ Scopes 
+  ✅ The Scope Chain 
+  ✅ The Event Loop 
+  ✅ Closures 
+  ✅ Hoisting 
+  ✅ Instantiation Patterns
+  ✅ FN.prototype 
+  ✅ this, .call, .apply, and .bind 
+  ✅ IIFEs/CommonJS/ES Modules 
+  ✅ Inheritance 
+  ✅ Composition 
+  ✅ Async Patterns
+
+Advanced JavaScript Course - https://tylermcginnis.com/courses/advanced-javascript/
+
+📺 Subscribe to our channel for more educational content to help you master the JavaScript ecosystem: https://www.youtube.com/tylermcginnis
+
+Here''s the full blog post - https://tylermcginnis.com/javascript-modules
+
+TylerMcGinnis.com is a linear, project-based approach to mastering the JavaScript ecosystem. Our React courses have been taken by over 80k students with an average rating of 4.8/5. So whether you want to learn more about React Hooks, React Native, React Router, vanilla JavaScript, or all of the above, our in-depth courses and tutorials will teach you everything you need to know about utilizing these technologies in 2019.
+
+🏃 Visit our website for more in-depth, highly-rated educational content to help you master the JavaScript ecosystem: https://tylermcginnis.com/', 'https://i.ytimg.com/vi/qJWALEoGge4/default.jpg', 'JavaScript Modules: From IIFEs to CommonJS to ES6 Modules', '00:32:14', 8, 4, '2019-11-13 10:53:50.25+05:30', '2019-11-13 10:53:50.25+05:30');
+
+
+--
+-- TOC entry 2932 (class 0 OID 0)
+-- Dependencies: 196
+
+--
+
+SELECT pg_catalog.setval('public."Courses_id_seq"', 3, true);
+
+
+--
+-- TOC entry 2933 (class 0 OID 0)
+-- Dependencies: 198
+
+--
+
+SELECT pg_catalog.setval('public."Lessons_id_seq"', 82, true);
+
+
+--
+-- TOC entry 2795 (class 2606 OID 17427)
+
+--
+
+ALTER TABLE ONLY public."Courses"
+    ADD CONSTRAINT "Courses_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2797 (class 2606 OID 17438)
+
+--
+
+ALTER TABLE ONLY public."Lessons"
+    ADD CONSTRAINT "Lessons_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2798 (class 2606 OID 17439)
+
+--
+
+ALTER TABLE ONLY public."Lessons"
+    ADD CONSTRAINT "Lessons_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES public."Courses"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+-- Completed on 2019-11-18 09:33:50 IST
+
+--
+-- PostgreSQL database dump complete
+--
+
