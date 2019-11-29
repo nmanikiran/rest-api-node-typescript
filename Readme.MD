@@ -2,7 +2,7 @@
 
 This is a simple REST API developed using node and express with typescript
 
-![alt text](https://image.ibb.co/nAd9OF/logos.png 'Node Typescript')
+![alt text](https://image.ibb.co/nAd9OF/logos.png "Node Typescript")
 
 ## ❤️ Found this project useful?
 
@@ -34,6 +34,24 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 
 you can change port in `.env` file check `.env-sample`
 
+## Features
+
+- CURD operations for Cources
+- CURD operations for Lessons
+- REST API Request object validations - Basic
+- Error Logs
+- Seeder for DB
+
+## Planned
+
+- JWT login
+- Postman collections
+- Improve request Object Validations
+- Improve Error Messages for request failures
+- Project / DB Setup in Ubuntu - Docs
+- Security
+- Hosting
+
 ## Contributing
 
 Awesome! Contributions of all kinds are greatly appreciated. To help smoothen the process we have a few non-exhaustive guidelines to follow which should get you going in no time.
@@ -50,14 +68,14 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
 
 - Match the document style as closely as possible.
 - Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)
-- Pull requests must be made against master branch for this particular repository.
+- Pull requests must be made against `development` branch for this particular repository.
 - Check for existing [issues](https://github.com/nmanikiran/rest-api-node-typescript/issues) first, before filing an issue.
 - Make sure you follow the set standard as all other projects in this repo
 - Have fun!
 
 ## Created & Maintained By
 
-Mani Kiran | @nmanikiran && Tushar Gupta | @curioustushar
+[@nmanikiran](https://github.com/nmanikiran) | [@curioustushar](https://github.com/curioustushar)
 
 Feel free to reach out to me through @nmanikiran if you have any questions or feedback!
 
@@ -65,7 +83,7 @@ Feel free to reach out to me through @nmanikiran if you have any questions or fe
 
 [VSCode](https://code.visualstudio.com/download)
 
-## Credits to
+## Thanks & Credits to
 
 - Envato Tuts+ [30 Days to Learn HTML & CSS (Full Course)](https://www.youtube.com/playlist?list=PLgGbWId6zgaWZkPFI4Sc9QXDmmOWa1v5F)
 - Wes Bos [JavaScript30](https://www.youtube.com/playlist?list=PLu8EoSxDXHP6CGK4YVJhL_VWetA865GOH)

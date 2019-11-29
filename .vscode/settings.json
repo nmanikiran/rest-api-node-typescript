@@ -3,7 +3,6 @@
   "editor.formatOnPaste": true,
   "prettier.singleQuote": true,
   "prettier.trailingComma": "all",
-  "prettier.tslintIntegration": true,
   "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
   "files.exclude": {
     "**/*.js": {
