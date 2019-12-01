@@ -11,5 +11,6 @@
     "**/*.js.map": {
       "when": "$(basename)"
     }
-  }
+  },
+  "prettier.tslintIntegration": true
 }

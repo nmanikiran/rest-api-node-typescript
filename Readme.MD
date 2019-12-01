@@ -16,9 +16,10 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 
 1. You need to install PostgreSQL
 
-   - Install PostgreSQL for Windows and set following environment variable
-     `C:\Program Files\PostgreSQL\10\bin`,
-     `C:\Program Files\PostgreSQL\10\lib`
+   - For Windows
+     - Install PostgreSQL and set following environment variable
+       `C:\Program Files\PostgreSQL\10\bin`,
+       `C:\Program Files\PostgreSQL\10\lib`
    - For Ubuntu
 
      - Installation
@@ -51,17 +52,19 @@ you can change port in `.env` file check `.env-sample`
 - CRUD operations for Lessons
 - REST API Request object validations - Basic
 - Error Logs
+- Setup docs
 - Seeder for DB
 
 ## Planned
 
-- JWT login
-- Postman collections
-- Improve request Object Validations
-- Improve Error Messages for request failures
-- Project / DB Setup in Ubuntu - Docs
-- Security
-- Hosting
+- \[ ] JWT login
+- \[ ] Unit Testing
+- \[x] Postman collections
+- \[ ] Improve request Object Validations
+- \[ ] Improve Error Messages for request failures
+- \[x] Project / DB Setup in Ubuntu - Docs
+- \[ ] Security
+- \[ ] Hosting
 
 ## Contributing
 
@@ -86,7 +89,23 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
 
 ## Created & Maintained By
 
-[@nmanikiran](https://github.com/nmanikiran) | [@curioustushar](https://github.com/curioustushar)
+<table>
+  <tr>
+    <td align="center"><a href="http://nmanikiran.com"><img src="https://avatars2.githubusercontent.com/u/3726349?s=460&v=4" width="100px;" alt="Mani Kiran"/><br /><sub><b>Mani Kiran N</b></sub></a><br />
+    <a href="#" title="Code">💻 </a>
+    <a href="#" title="Documentation">📖</a>
+    <a href="#" title="Ideas">🤔</a>
+    <a href="#" title="Reviewed Pull Requests">👀</a>
+    <a href="#" title="Maintenance">🚧 </a>
+    </td>
+    <td align="center"><a href="https://curioustushar.github.io/"><img src="https://avatars3.githubusercontent.com/u/12570521?v=4" width="100px;" alt="Tushar Gupta"/><br /><sub><b>Tushar Gupta</b></sub></a><br />
+    <a href="#" title="Code">💻 </a>
+    <a href="#" title="Documentation">📖</a>
+    <a href="#" title="Answering Questions">💬 </a>
+    <a href="#" title="Maintenance">🚧 </a>
+    </td>
+  </tr>
+</table>
 
 Feel free to reach out to me through @nmanikiran if you have any questions or feedback!
 

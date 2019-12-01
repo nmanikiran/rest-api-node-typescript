@@ -6,7 +6,7 @@ export default class LessonRoutes {
   constructor() {}
 
   getAllLessons(req: Request, res: Response, next: NextFunction) {
-    LessonRepo.getAllLessons({ order: ['seqNo'] })
+    LessonRepo.getAllLessons({ order: ['id'] })
       .then(result => res.json(result))
       .catch(err => {
         apiErrorHandler(err, req, res, 'Fetch All Lessons failed.');
