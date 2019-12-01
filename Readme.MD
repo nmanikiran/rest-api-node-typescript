@@ -14,9 +14,20 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 
 ## Setup DB
 
-1. you need to install PostgreSQL and then set the following environment variable
-   `C:\Program Files\PostgreSQL\10\bin`,
-   `C:\Program Files\PostgreSQL\10\lib`
+1. You need to install PostgreSQL
+
+   - Install PostgreSQL for Windows and set following environment variable
+     `C:\Program Files\PostgreSQL\10\bin`,
+     `C:\Program Files\PostgreSQL\10\lib`
+   - For Ubuntu
+
+     - Installation
+       `sudo apt update`
+       `sudo apt-get install postgresql postgresql-contrib`
+
+     - Manage `PostgreSQL` service
+       `sudo systemctl {status | start | restart | stop} postgresql`
+
 2. rename `.env-sample` to `.env` in the file the DB connection string need to be updated according to your `credentials`.
    ex : `postgres://<YourUserName>:<YourPassword>@localhost:5432/<YourDatabase>`
 

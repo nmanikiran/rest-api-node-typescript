@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 
 export class LessonValidator {
-  constructor() {}
+  constructor() { }
 
   validateBody(schema) {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -25,21 +25,12 @@ export class LessonValidator {
 }
 
 export const lessonSchema = Joi.object().keys({
-  courseId: Joi.number()
-    .integer()
-    .required(),
-  url: Joi.string()
-    .trim()
-    .required(),
-  gitHubUrl: Joi.string()
-    .trim()
-    .required(),
-  tags: Joi.string()
-    .trim()
-    .required(),
+  courseId: Joi.number().integer().required(),
+  url: Joi.string().trim().uri().required(),
   description: Joi.string().trim(),
+  thumbnailUrl: Joi.string().uri(),
+  title: Joi.string().trim().required(),
   duration: Joi.string(),
-  pro: Joi.boolean(),
   seqNo: Joi.number(),
   createdAt: Joi.date(),
   updatedAt: Joi.date()
