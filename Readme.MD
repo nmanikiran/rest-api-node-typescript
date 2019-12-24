@@ -33,7 +33,7 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
    ex : `postgres://<YourUserName>:<YourPassword>@localhost:5432/<YourDatabase>`
 
 3. you can find the DB and other details under `src/db`
-   create a database with the name `node-typescript-rest-api` and then run/ import the `.sql` files
+   create a database with the name `node-typescript-rest-api` and then run/ import the `.sql` files (extract the sql files from sql.zip).
    Or you can run `npm run seed`.
 
 ## Run the app locally
