@@ -39,7 +39,7 @@
     "@types/node": "^12.12.7",
     "@types/sequelize": "^4.28.6",
     "@types/winston": "^2.4.4",
-    "concurrently": "^5.0.0",
+    "concurrently": "^5.2.0",
     "nodemon": "^1.19.4",
     "typescript": "^3.7.2"
   },

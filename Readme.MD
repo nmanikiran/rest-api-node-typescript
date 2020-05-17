@@ -12,22 +12,25 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 
 [Node.js](https://nodejs.org/en/), [postgresql](https://www.postgresql.org/download/)
 
-## Setup DB
+### Getting Started
+
+### Setup DB
 
 1. You need to install PostgreSQL
 
-   - For Windows
-     - Install PostgreSQL and set following environment variable
-       `C:\Program Files\PostgreSQL\10\bin`,
-       `C:\Program Files\PostgreSQL\10\lib`
-   - For Ubuntu
 
-     - Installation
-       `sudo apt update`
-       `sudo apt-get install postgresql postgresql-contrib`
+    - For Windows
+      - Install PostgreSQL and set following environment variable
+        `C:\Program Files\PostgreSQL\10\bin`,
+        `C:\Program Files\PostgreSQL\10\lib`
+    - For Ubuntu
 
-     - Manage `PostgreSQL` service
-       `sudo systemctl {status | start | restart | stop} postgresql`
+      - Installation
+        `sudo apt update`
+        `sudo apt-get install postgresql postgresql-contrib`
+
+      - Manage `PostgreSQL` service
+        `sudo systemctl {status | start | restart | stop} postgresql`
 
 2. rename `.env-sample` to `.env` in the file the DB connection string need to be updated according to your `credentials`.
    ex : `postgres://<YourUserName>:<YourPassword>@localhost:5432/<YourDatabase>`
@@ -36,7 +39,7 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
    create a database with the name `node-typescript-rest-api` and then run/ import the `.sql` files (extract the sql files from sql.zip).
    Or you can run `npm run seed`.
 
-## Run the app locally
+### Run the app locally
 
 - git clone https://github.com/nmanikiran/rest-api-node-typescript.git
 
@@ -45,6 +48,22 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 - `npm run dev` - This will start the application in development mode
 
 you can change port in `.env` file check `.env-sample`
+
+## Folder Structure
+
+```
+src
+└───index.ts          # Application entry point
+└───routes.ts         # Application routes / endpoints
+└───controllers       # Express route controllers for all the endpoints of the app
+└───db                # DB related files like connection / seed data
+└───handlers          # Common logic
+└───logs              # application logs
+└───models            # DB Models (Postgress)
+└───repositories      # All the database interaction logic is here
+└───validators        # API Request object validations
+
+```
 
 ## Features
 
@@ -65,6 +84,32 @@ you can change port in `.env` file check `.env-sample`
 - \[x] Project / DB Setup in Ubuntu - Docs
 - \[ ] Security
 - \[ ] Hosting
+
+## REST Services
+
+The application exposes a few REST endpoints
+
+`HTTP` `GET` /api/lessons
+`HTTP` `GET` /api/lessons/:id
+`HTTP` `GET` /api/courses
+You can use the following code snippet to call the secured endpoint:
+
+```js
+fetch("http://localhost:3000/api/courses", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
+  .then((response) => {
+    if (response.status === 200) {
+      response.json().then((j) => console.log(j));
+    } else {
+      console.log("ERROR", response.status);
+    }
+  })
+  .catch((error) => console.log(error));
+```
 
 ## Contributing
 
