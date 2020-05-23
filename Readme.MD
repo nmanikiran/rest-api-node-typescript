@@ -59,6 +59,7 @@ src
 └───db                # DB related files like connection / seed data
 └───handlers          # Common logic
 └───logs              # application logs
+└───middlewares       # express middlewares
 └───models            # DB Models (Postgress)
 └───repositories      # All the database interaction logic is here
 └───validators        # API Request object validations
@@ -90,8 +91,11 @@ src
 The application exposes a few REST endpoints
 
 `HTTP` `GET` /api/lessons
+
 `HTTP` `GET` /api/lessons/:id
+
 `HTTP` `GET` /api/courses
+
 You can use the following code snippet to call the secured endpoint:
 
 ```js
@@ -110,27 +114,6 @@ fetch("http://localhost:3000/api/courses", {
   })
   .catch((error) => console.log(error));
 ```
-
-## Contributing
-
-Awesome! Contributions of all kinds are greatly appreciated. To help smoothen the process we have a few non-exhaustive guidelines to follow which should get you going in no time.
-
-## Using GitHub Issues
-
-- Feel free to use GitHub issues for questions, bug reports, and feature requests
-- Use the search feature to check for an existing issue Include as much information as possible and provide any relevant resources (Eg. screenshots)
-- A pull request with a breaking test would be super preferable here but isn't required
-
-## Submitting a Pull Requests
-
-I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure the timely addition of your request:
-
-- Match the document style as closely as possible.
-- Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)
-- Pull requests must be made against the `development` branch for this particular repository.
-- Check for existing [issues](https://github.com/nmanikiran/rest-api-node-typescript/issues) first, before filing an issue.
-- Make sure you follow the set standard as all other projects in this repo
-- Have fun!
 
 ## Created & Maintained By
 
