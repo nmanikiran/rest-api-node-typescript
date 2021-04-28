@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import CourseRepo from './../repositories/CoursesRepo';
 import { apiErrorHandler } from './../handlers/errorHandler';
 
-export default class CoursesRoutes {
+export default class CoursesCtrl {
   constructor() { }
 
   async getAllCourses(req: Request, res: Response, next: NextFunction) {

@@ -18,19 +18,18 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 
 1. You need to install PostgreSQL
 
+   - For Windows
+     - Install PostgreSQL and set following environment variable
+       `C:\Program Files\PostgreSQL\10\bin`,
+       `C:\Program Files\PostgreSQL\10\lib`
+   - For Ubuntu
 
-    - For Windows
-      - Install PostgreSQL and set following environment variable
-        `C:\Program Files\PostgreSQL\10\bin`,
-        `C:\Program Files\PostgreSQL\10\lib`
-    - For Ubuntu
+     - Installation
+       `sudo apt update`
+       `sudo apt-get install postgresql postgresql-contrib`
 
-      - Installation
-        `sudo apt update`
-        `sudo apt-get install postgresql postgresql-contrib`
-
-      - Manage `PostgreSQL` service
-        `sudo systemctl {status | start | restart | stop} postgresql`
+     - Manage `PostgreSQL` service
+       `sudo systemctl {status | start | restart | stop} postgresql`
 
 2. rename `.env-sample` to `.env` in the file the DB connection string need to be updated according to your `credentials`.
    ex : `postgres://<YourUserName>:<YourPassword>@localhost:5432/<YourDatabase>`
@@ -54,14 +53,14 @@ you can change port in `.env` file check `.env-sample`
 ```
 src
 └───index.ts          # Application entry point
-└───routes.ts         # Application routes / endpoints
+└───routes            # Application routes / endpoints
 └───controllers       # Express route controllers for all the endpoints of the app
+└───repositories      # All the database interaction logic is here
 └───db                # DB related files like connection / seed data
 └───handlers          # Common logic
 └───logs              # application logs
 └───middlewares       # express middlewares
 └───models            # DB Models (Postgress)
-└───repositories      # All the database interaction logic is here
 └───validators        # API Request object validations
 
 ```
