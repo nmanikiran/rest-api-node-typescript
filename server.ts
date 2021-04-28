@@ -9,13 +9,13 @@ const app: Application = express();
 const server: Server = new Server(app);
 const port: number = parseInt(process.env.port, 10) || 3000;
 
-app.listen(port, 'localhost', function() {
+app.listen(port, 'localhost', function () {
   console.info(`Server running on : http://localhost:${port}`);
 }).on('error', (err: any) => {
-    if (err.code === 'EADDRINUSE') {
-      console.log('server startup error: address already in use');
-    }
-    else {
-      console.log(err);
-    }
+  if (err.code === 'EADDRINUSE') {
+    console.log('server startup error: address already in use');
+  }
+  else {
+    console.log(err);
+  }
 });
