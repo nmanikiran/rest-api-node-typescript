@@ -6,20 +6,17 @@ export class LessonValidator {
 
   validateBody(schema) {
     return (req: Request, res: Response, next: NextFunction) => {
-      const result = Joi.validate(req.body, schema);
-
-      if (result.error) {
-        return res.status(400).json(result.error);
-      } else {
-        if (!req['value']) {
-          req['value'] = {};
-        }
-        if (!req['value']['body']) {
-          req['value']['body'] = {};
-        }
-        req['value']['body'] = result.value;
-        next();
-      }
+        schema.validateAsync(req.body)
+          .then(val => {
+            if (!req['value']) {
+              req['value'] = {};
+            }
+            if (!req['value']['body']) {
+              req['value']['body'] = {};
+            }
+            req['value']['body'] = val;
+            next();
+          }).catch(err => res.status(400).json(err));
     };
   }
 }
