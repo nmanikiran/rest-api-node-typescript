@@ -70,3 +70,6 @@ typings/
 
 
 # End of https://www.gitignore.io/api/node,visualstudiocode
+
+*.sql
+links.txt
