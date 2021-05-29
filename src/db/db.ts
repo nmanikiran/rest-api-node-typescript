@@ -1,6 +1,6 @@
 import { Sequelize, Options } from 'sequelize';
-const dbUrl: string = process.env.DB_URL;
-const nodeEnv: string = process.env.NODE_ENV;
+const dbUrl: string = process.env.DB_URL || '';
+const nodeEnv: string = process.env.NODE_ENV || '';
 
 if (!dbUrl) {
   console.log('Please create .env file, refer .env.sample');

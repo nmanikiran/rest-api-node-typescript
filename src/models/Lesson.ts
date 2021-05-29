@@ -3,13 +3,13 @@ import { Model, DataTypes } from 'sequelize';
 
 export class Lesson extends Model {
   public id!: number;
-  public url: string;
-  public title: string;
-  public description: string;
-  public thumbnailUrl: string;
-  public duration: string;
-  public seqNo: number;
-  public courseId: number;
+  public url!: string;
+  public title!: string;
+  public description!: string;
+  public thumbnailUrl!: string;
+  public duration!: string;
+  public seqNo!: number;
+  public courseId!: number;
 }
 
 Lesson.init(

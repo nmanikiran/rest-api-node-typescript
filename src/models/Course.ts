@@ -4,15 +4,15 @@ import { Lesson } from './Lesson';
 
 export class Course extends Model {
   public id!: number;
-  public description: string;
-  public url: string;
-  public longDescription: string;
-  public iconUrl: string;
-  public tags: string;
-  public channelTitle: string;
-  public channelUrl: string;
-  public channelId: string;
-  public seqNo: number;
+  public description!: string;
+  public url!: string;
+  public longDescription!: string;
+  public iconUrl!: string;
+  public tags!: string;
+  public channelTitle!: string;
+  public channelUrl!: string;
+  public channelId!: string;
+  public seqNo!: number;
 }
 
 Course.init(
