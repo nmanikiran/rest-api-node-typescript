@@ -3,7 +3,9 @@
     "module": "commonjs",
     "target": "es6",
     "noImplicitAny": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": true,
+    "allowJs": false
   },
   "files.exclude": {
     "**/.git": true,
