@@ -38,6 +38,8 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
    create a database with the name `node-typescript-rest-api` and then run/ import the `.sql` files (extract the sql files from sql.zip).
    Or you can run `npm run seed`.
 
+4. install `pm2` globally with `npm install -g pm2`
+
 ### Run the app locally
 
 - git clone https://github.com/nmanikiran/rest-api-node-typescript.git
@@ -45,6 +47,7 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 - `npm install`
 - `npm start` - This will start the application and run on port 3000
 - `npm run dev` - This will start the application in development mode
+- `npm run watch & pm2 start ecosystem.config.js` to start the application with cluster for scalability
 
 you can change port in `.env` file check `.env-sample`
 
