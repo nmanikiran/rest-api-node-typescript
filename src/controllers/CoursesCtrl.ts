@@ -7,7 +7,7 @@ export default class CoursesCtrl {
 
   async getAllCourses(req: Request, res: Response, next: NextFunction) {
     try {
-      const courseList = await CourseRepo.getAllCourses({ order: ['seqNo'] })
+      const courseList = await CourseRepo.getAllCourses({ order: ['seqNo'] });
       res.json(courseList);
     } catch (error) {
       apiErrorHandler(error, req, res, 'Fetch All Courses failed.');

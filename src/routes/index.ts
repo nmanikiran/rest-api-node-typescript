@@ -1,6 +1,6 @@
 import { Application } from 'express';
 import courseRouter from './CourseRoutes';
-import lessonRouter from './LessonRoutes'
+import lessonRouter from './LessonRoutes';
 
 export default class Routes {
 
